@@ -4,6 +4,7 @@ import { useState, Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import MainButton from '@/components/ui/MainButton'
+import Link from 'next/link'
 
 const navigation = [
     { name: 'How It Works', href: '/how-it-works' },
@@ -20,10 +21,10 @@ export default function Navbar() {
             <nav className="flex items-center justify-between py-6 max-w-7xl mx-auto px-6 lg:px-8">
                 {/* Logo and Desktop Links */}
                 <div className="flex items-center gap-x-12">
-                    <a href="/" className="-m-1.5 p-1.5">
+                    <Link href="/" className="-m-1.5 p-1.5">
                         <span className="sr-only">CASHBATE</span>
                         <img src="/logos/logo.png" alt="CASHBATE logo" className="h-8 w-auto" />
-                    </a>
+                    </Link>
                     <div className="hidden lg:flex lg:gap-x-12">
                         {navigation.map((item) => (
                             <a
@@ -76,10 +77,10 @@ export default function Navbar() {
                     >
                         <Dialog.Panel className="fixed inset-0 bg-white flex flex-col p-6">
                             <div className="flex items-center justify-between mb-8">
-                                <a href="/" className="-m-1.5 p-1.5">
+                                <Link href="/" className="-m-1.5 p-1.5">
                                     <span className="sr-only">CASHBATE</span>
                                     <img src="/logos/logo.png" alt="CASHBATE logo" className="h-8 w-auto" />
-                                </a>
+                                </Link>
                                 <button
                                     type="button"
                                     onClick={() => setMobileMenuOpen(false)}

@@ -12,7 +12,7 @@ const HeroSection = () => {
                 <p className="text-lg sm:text-xl text-gray-600 mt-6 max-w-lg leading-tight">
                     CASHBATE is an incentive solution that shares risk with you by covering
                     cosmetic upgrades to help your home sell quicker and for more.
-                    <br/>It's not a credit, not a loan.
+                    <br/>It&aposs not a credit, not a loan.
                 </p>
             </div>
 
@@ -47,7 +47,7 @@ const HeroSection = () => {
             {/* Disclaimer Text */}
             <p className="test-xs sm:text-sm text-gray-500 mt-6 max-w-3xl leading-tight">
                 CASHBATE covers cosmetic upgrades up to <b className="font-semibold">$9,888</b> in value, with no upfront cost.
-                Payment is settled at closing. If your home doesn't sell after 6 months, you owe $0 for our contribution.
+                Payment is settled at closing. If your home doesn&apost sell after 6 months, you owe $0 for our contribution.
             </p>
         </section>
     );

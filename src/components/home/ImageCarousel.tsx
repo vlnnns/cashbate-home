@@ -1,5 +1,6 @@
 "use client"
 import React, { useRef } from 'react';
+import Image from 'next/image'
 
 // Интерфейс для данных слайда, в данном случае только изображение
 interface CarouselSlide {
@@ -87,7 +88,7 @@ const ImageCarousel = () => {
                                 <div key={index} className="flex-none w-11/12 sm:w-5/6 md:w-2/3 lg:w-3/5 snap-center">
                                     {/* Уменьшена высота контейнера изображения */}
                                     <div className="h-[380px] rounded-2xl overflow-hidden">
-                                        <img
+                                        <Image
                                             src={slide.image}
                                             alt={slide.alt}
                                             className="w-full h-full object-cover"
