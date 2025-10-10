@@ -6,10 +6,10 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import MainButton from '@/components/ui/MainButton'
 
 const navigation = [
-    { name: 'How It Works', href: '#how-it-works' },
-    { name: "What's Included", href: '#whats-included' },
-    { name: 'FAQs', href: '#faqs' },
-    { name: 'Why CASHBATE', href: '#why-cashbate' },
+    { name: 'How It Works', href: '/how-it-works' },
+    { name: "What's Included", href: '/whats-included' },
+    { name: 'FAQs', href: '/faqs' },
+    { name: 'Why CASHBATE', href: '/why-cashbate' },
 ]
 
 export default function Navbar() {
@@ -20,7 +20,7 @@ export default function Navbar() {
             <nav className="flex items-center justify-between py-6 max-w-7xl mx-auto px-6 lg:px-8">
                 {/* Logo and Desktop Links */}
                 <div className="flex items-center gap-x-12">
-                    <a href="#" className="-m-1.5 p-1.5">
+                    <a href="/" className="-m-1.5 p-1.5">
                         <span className="sr-only">CASHBATE</span>
                         <img src="/logos/logo.png" alt="CASHBATE logo" className="h-8 w-auto" />
                     </a>
@@ -76,7 +76,7 @@ export default function Navbar() {
                     >
                         <Dialog.Panel className="fixed inset-0 bg-white flex flex-col p-6">
                             <div className="flex items-center justify-between mb-8">
-                                <a href="#" className="-m-1.5 p-1.5">
+                                <a href="/" className="-m-1.5 p-1.5">
                                     <span className="sr-only">CASHBATE</span>
                                     <img src="/logos/logo.png" alt="CASHBATE logo" className="h-8 w-auto" />
                                 </a>

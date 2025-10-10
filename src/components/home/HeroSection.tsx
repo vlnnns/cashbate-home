@@ -35,7 +35,7 @@ const HeroSection = () => {
                         className="flex-shrink-0 bg-blue-600 hover:bg-blue-700 text-white 
                                    font-medium py-3 px-2 text-lg rounded-full
                                    transition duration-300 transform 
-                                   sm:-translate-x-3 whitespace-nowrap h-16 sm:h-[calc(100%-10px)] 
+                                   sm:-translate-x-3 whitespace-nowrap h-16 sm:h-[calc(100%)]
                                    sm:self-center sm:mr-1"
                         style={{ paddingLeft: '2.5rem', paddingRight: '2.5rem' }} // For explicit padding
                     >
