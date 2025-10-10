@@ -1,33 +1,24 @@
-import Image from "next/image";
-import Navbar from "@/components/Navbar";
-import HeroSection from "@/components/HeroSection";
-import WhyChoose from "@/components/WhyChoose";
-import HowItWorks from "../components/HowItWorks";
-import CashBateCarousel from "@/components/CashBateCarousel";
-import Faq from "@/components/Faq";
-import Stats from "@/components/Stats"
-import Why from "@/components/Why"
-import Footer from "@/components/Footer";
+import HeroSection from "@/components/home/HeroSection";
+import WhyChoose from "@/components/home/WhyChoose";
+import HowItWorks from "@/components/home/HowItWorks";
+import CashBateCarousel from "@/components/home/CashBateCarousel";
+import Faq from "@/components/home/Faq";
+import Stats from "@/components/home/Stats";
+import Why from "@/components/home/Why";
+import ImageCarousel from "@/components/home/ImageCarousel"; // Добавим и этот компонент
 
-export default function Home() {
-  return (
-      <div className="flex flex-col min-h-screen py-8 gap-10 ">
-        {/* Navbar */}
-        <Navbar />
-
-        <main className="">
-          {/* Hero Section */}
-          <HeroSection />
+// Это содержимое для главной страницы (/)
+export default function HomePage() {
+    return (
+        <>
+            <HeroSection />
             <WhyChoose />
             <HowItWorks />
             <CashBateCarousel />
             <Faq />
             <Stats />
+            <ImageCarousel />
             <Why />
-            <Footer />
-        </main>
-
-
-      </div>
-  );
+        </>
+    );
 }

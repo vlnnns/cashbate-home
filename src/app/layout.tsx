@@ -1,15 +1,14 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Poppins } from "next/font/google"; // 1. Импортируем шрифт Poppins
 import "./globals.css";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 
-const geistSans = Geist({
-    variable: "--font-geist-sans",
+// 2. Настраиваем шрифт Poppins
+const poppins = Poppins({
     subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-    variable: "--font-geist-mono",
-    subsets: ["latin"],
+    weight: ["400", "500", "600", "700", "800"],
+    variable: "--font-poppins", // Создаем CSS-переменную
 });
 
 export const metadata: Metadata = {
@@ -22,11 +21,20 @@ export default function RootLayout({
                                    }: Readonly<{ children: React.ReactNode }>) {
     return (
         <html lang="en">
-        <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-        {children}
+        {/* 3. Применяем класс шрифта и межбуквенное расстояние */}
+        <body className={`${poppins.variable} font-sans tracking-tight`}>
+        <div className="flex flex-col min-h-screen">
+            {/* Navbar будет на всех страницах */}
+            <Navbar />
+
+            {/* Здесь будет отображаться содержимое страницы (page.tsx) */}
+            <main className="flex-grow">{children}</main>
+
+            {/* Footer будет на всех страницах */}
+            <Footer />
+        </div>
         </body>
         </html>
     );
 }
+

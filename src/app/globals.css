@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
 
 
 :root {
@@ -12,7 +13,8 @@
 
 body {
   background: var(--background);
-  font-family: var(--font-sans), sans-serif;
+  /* Шрифт Poppins добавлен в начало списка, он будет использоваться в первую очередь */
+  font-family: 'Poppins', var(--font-sans), sans-serif;
   transition: background 0.3s ease, color 0.3s ease; /* Smooth transition between themes */
 }
 
