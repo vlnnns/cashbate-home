@@ -1,10 +1,8 @@
 "use client";
 
 import { useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
+import MainButton from "@/components/ui/MainButton";
 
-// Дані для нашого акордеону
 const faqData = [
     {
         question: "What is CASHBATE?",
@@ -139,7 +137,7 @@ export default function FaqsPage() {
                 </section>
 
                 {/* === CTA Section === */}
-                <section className="bg-gray-50 py-16 sm:py-24">
+                <section className=" py-16 sm:py-24">
                     <div className="max-w-3xl mx-auto text-center px-4 sm:px-6 lg:px-8">
                         <h2 className="text-3xl font-semibold text-neutral-700">
                             Need more information?
@@ -149,13 +147,7 @@ export default function FaqsPage() {
                             works and see if your home qualifies.
                         </p>
                         <div className="mt-8">
-                            <Link
-                                // ВИПРАВЛЕНО: (Warning) Замінено неіснуюче посилання
-                                href="/check"
-                                className="inline-flex items-center justify-center rounded-full bg-blue-600 px-8 py-3 text-base font-semibold text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-                            >
-                                See If Your Home Qualifies &gt;&gt;
-                            </Link>
+                            <MainButton text=" See If Your Home Qualifies" />
                         </div>
                     </div>
                 </section>

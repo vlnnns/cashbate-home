@@ -6,6 +6,7 @@ import AppraisalSection from "@/components/why-cashbate/AppraisalSection";
 import AgentsCarousel from "@/components/why-cashbate/AgentsCarousel";
 import ComparisonSection from "@/components/why-cashbate/ComparisonSection";
 import ReadyToStartSection from "@/components/why-cashbate/ReadyToStartSection";
+import MainButton from "@/components/ui/MainButton";
 // Іконка стрілки для кнопки
 const ArrowRightIcon = () => (
     <svg
@@ -58,13 +59,7 @@ const WhyCashbateHero = () => {
                         {/* 'justify-between' притисне цей блок до низу */}
                         <div>
                             <div className="mt-10">
-                                <Link
-                                    href="/check" // Замініть на ваше посилання
-                                    className="inline-flex items-center justify-center gap-x-3 bg-blue-600 text-white font-semibold px-8 py-4 rounded-full shadow-lg hover:bg-blue-700 transition-colors duration-200"
-                                >
-                                    Start My Risk-Free Check
-                                    <ArrowRightIcon/>
-                                </Link>
+                                <MainButton text="Start My Risk-Free Check" />
                             </div>
 
                             <p className="mt-6 text-xs text-gray-500 max-w-sm mx-auto lg:mx-0">

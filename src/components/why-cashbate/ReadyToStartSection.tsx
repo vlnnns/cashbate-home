@@ -1,5 +1,6 @@
-import React from 'react';
-import Link from 'next/link';
+"use client"
+
+import { useModal } from '@/context/ModalContext';
 
 // Іконка стрілки для кнопки
 const ArrowRightIcon = () => (
@@ -20,10 +21,9 @@ const ArrowRightIcon = () => (
 );
 
 export default function ReadyToStartSection() {
+    const { openModal } = useModal();
     return (
-        // 1. Зробіть секцію 'relative', щоб дочірні 'absolute' елементи
-        //    позиціонувалися відносно неї.
-        //    Додано 'bg-gray-900' як запасний фон на час завантаження зображення.
+
         <section className="relative  overflow-hidden" style={{
             backgroundImage: `url('/blue-bg.png')`,
             backgroundSize: 'cover',
@@ -40,21 +40,21 @@ export default function ReadyToStartSection() {
                     is the right fit for your home?
                 </h2>
 
-                {/* Кнопка CTA */}
                 <div className="mt-20">
-                    <Link
-                        href="/check" // Замініть на ваше посилання
-                        className="inline-flex items-center justify-center gap-x-2
-                                   bg-white text-neutral-700 font-medium
-                                   px-8 py-3.5 rounded-full
-                                   shadow-lg hover:scale-105 transition-transform"
+                    <button
+                        type="button"
+                        onClick={openModal}
+                        className="inline-flex items-center justify-center
+                       bg-white text-gray-800 font-semibold
+                       px-8 py-3.5 rounded-full
+                       shadow-lg hover:scale-105 transition-transform
+                       focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2"
                     >
                         Start My Risk-Free Check
                         <ArrowRightIcon />
-                    </Link>
+                    </button>
                 </div>
 
-                {/* Маленький текст під кнопкою */}
                 <p className="mt-6 text-xs text-white/70 max-w-md mx-auto">
                     No upfront cost. Covered up to the base solution value. If your home doesn&apos;t
                     sell within 6 months at market price, you owe $0.

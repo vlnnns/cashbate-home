@@ -1,9 +1,12 @@
 // components/WhatIsIncludedSection.tsx
+"use client";
+
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
+import { useModal } from '@/context/ModalContext';
 
 export default function WhatIsIncludedSection() {
+    const { openModal } = useModal(); // 3. Отримайте функцію openModal з контексту
     return (
         <section className="relative pt-24 sm:pt-32  overflow-hidden">
 
@@ -38,16 +41,17 @@ export default function WhatIsIncludedSection() {
                     </div>
 
                     <div className="flex-shrink-0">
-                        <Link
-                            href="/check" // Замініть на ваше посилання
+                        <button
+                            type="button"
+                            onClick={openModal} // 5. Викликаємо openModal при кліку
                             className="inline-flex items-center justify-center
-                                       bg-white text-gray-800 font-semibold
-                                       px-8 py-3.5 rounded-full
-                                       shadow-lg hover:scale-105 transition-transform
-                                       focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2"
+                       bg-white text-gray-800 font-semibold
+                       px-8 py-3.5 rounded-full
+                       shadow-lg hover:scale-105 transition-transform
+                       focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2"
                         >
                             See If Your Home Qualifies
-                        </Link>
+                        </button>
                     </div>
                 </div>
 

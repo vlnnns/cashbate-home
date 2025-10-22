@@ -24,9 +24,7 @@ a {
   cursor: pointer;
 }
 
-a:hover {
-  color: #3498db; /* Modify with your preferred hover color */
-}
+
 
 button{
   cursor: pointer;

@@ -1,6 +1,6 @@
 'use client'
 import React, { useRef, useState, useEffect } from 'react';
-
+import Link from 'next/link'; // 1. Не забудьте імпортувати 'Link'
 // Определяем тип для одного шага
 interface Step {
     title: string;
@@ -161,12 +161,15 @@ const HowItWorksSection = () => {
 
                 {/* Call to Action Button */}
                 <div className="mt-16 text-center">
-                    <button className="inline-flex items-center bg-white text-neutral-700 font-semibold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
+                    <Link
+                        href="/how-it-works" // 2. Вкажіть посилання тут
+                        className="inline-flex items-center bg-white text-neutral-700 font-semibold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+                    >
                         See Full Process
                         <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
                         </svg>
-                    </button>
+                    </Link>
                 </div>
             </div>
         </section>

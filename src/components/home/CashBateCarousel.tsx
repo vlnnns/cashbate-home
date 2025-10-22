@@ -88,11 +88,6 @@ const CashBateCarousel = () => {
                                             priority={index === 0} // чуть быстрее для первого
                                         />
                                         <div className="absolute top-0 left-0 p-6 w-full">
-                                            <div className="absolute top-6 right-6 w-10 h-10 bg-white rounded-full flex items-center justify-center backdrop-blur-sm border border-white/30">
-                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                    <path d="M7 17L17 7M17 7H7M17 7V17" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                                </svg>
-                                            </div>
                                             <h3 className="text-3xl font-semibold w-2/3 drop-shadow-sm">{slide.title}</h3>
                                         </div>
                                     </div>

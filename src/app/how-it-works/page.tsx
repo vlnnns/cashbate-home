@@ -5,6 +5,7 @@ import Link from "next/link";
 import HowItWorksSteps from "@/components/how-it-works/HowItWorksSteps";
 import KeyBenefitsSection from "@/components/how-it-works/KeyBenefitsSection";
 import EligibilityCheckSection from "@/components/how-it-works/EligibilityCheckSection";
+import MainButton from "@/components/ui/MainButton";
 
 export default function HowItWorksPage() {
     return (
@@ -39,16 +40,10 @@ export default function HowItWorksPage() {
                             and for more — with no upfront cost.
                         </p>
 
-                        <Link
-                            href="/check"
-                            className="mt-10 inline-flex items-center justify-center rounded-full
-                         bg-blue-600 px-7 sm:px-8 py-3.5 text-base font-semibold text-white
-                         hover:bg-blue-700
-                         focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600
-                         transition"
-                        >
-                            Start My Risk-Free Check
-                        </Link>
+                        <div className="mt-4">
+                            <MainButton text="Start My Risk-Free Check" />
+                        </div>
+
 
                         {/* Стрілка вниз */}
                         {/* ЗМІНЕНО: Колір стрілки на світлий */}

@@ -106,7 +106,7 @@ export default function Navbar() {
                             </div>
 
                             <div className="mt-auto">
-                                <MainButton text="Get Started Risk Free >>" link="#get-started" />
+                                <MainButton text="Get Started Risk Free >>" />
                             </div>
                         </Dialog.Panel>
                     </Transition.Child>

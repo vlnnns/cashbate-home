@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState, FormEvent } from "react";
-
+import HeroAddressForm from '@/components/HeroAddressForm';
 /**
  * HeroSection — edge-to-edge background image with overlay, centered content, and responsive address form.
  */
@@ -56,33 +56,8 @@ export default function HeroSection({
                     </p>
                 </div>
 
-                <form
-                    onSubmit={handleSubmit}
-                    className="relative mt-10 w-full max-w-3xl"
-                    aria-label="Property address form"
-                >
-                    <div className="flex flex-col sm:flex-row items-stretch gap-3 sm:gap-2 bg-white/90 backdrop-blur-md shadow-xl rounded-[36px] p-2">
-                        <label htmlFor="address" className="sr-only">
-                            Enter Property Address
-                        </label>
-                        <input
-                            id="address"
-                            type="text"
-                            inputMode="text"
-                            autoComplete="street-address"
-                            placeholder="Enter Property Address"
-                            value={address}
-                            onChange={(e) => setAddress(e.target.value)}
-                            className="flex-1 h-14 sm:h-16 rounded-full bg-transparent px-5 sm:pl-6 text-[16px] sm:text-lg text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-0"
-                        />
-                        <button
-                            type="submit"
-                            className="inline-flex items-center justify-center whitespace-nowrap rounded-full h-14 sm:h-16 px-6 sm:px-8 font-medium text-base sm:text-lg bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 transition-colors duration-200 shadow-md"
-                        >
-                            {ctaLabel}
-                        </button>
-                    </div>
-                </form>
+                <HeroAddressForm ctaLabel="Start My Risk-Free Check" />
+
 
                 <p className="mt-6 max-w-3xl text-xs sm:text-sm leading-snug text-gray-600">
                     CASHBATE covers cosmetic upgrades up to{" "}

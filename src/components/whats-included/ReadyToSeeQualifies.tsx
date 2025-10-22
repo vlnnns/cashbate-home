@@ -1,7 +1,8 @@
-import React from 'react';
-import Link from 'next/link';
+"use client";
 
-// Іконка стрілки для кнопки
+import { useModal } from '@/context/ModalContext';
+
+
 const ArrowRightIcon = () => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -20,10 +21,9 @@ const ArrowRightIcon = () => (
 );
 
 export default function ReadyToSeeQualifies() {
+    const { openModal } = useModal();
     return (
-        // 1. Зробіть секцію 'relative', щоб дочірні 'absolute' елементи
-        //    позиціонувалися відносно неї.
-        //    Додано 'bg-gray-900' як запасний фон на час завантаження зображення.
+
         <section className="relative  overflow-hidden" style={{
             backgroundImage: `url('/blue-bg.png')`,
             backgroundSize: 'cover',
@@ -33,23 +33,23 @@ export default function ReadyToSeeQualifies() {
 
             <div className="relative z-10 max-w-3xl mx-auto text-center py-20 sm:py-36 px-4 sm:px-6 lg:px-8 " >
 
-                {/* Заголовок */}
                 <h2 className="text-4xl font-medium text-white tracking-tight">
                     Ready to see if your home qualifies?
                 </h2>
 
-                {/* Кнопка CTA */}
                 <div className="mt-8">
-                    <Link
-                        href="/check" // Замініть на ваше посилання
-                        className="inline-flex items-center justify-center gap-x-2
-                                   bg-white text-neutral-700 font-medium
-                                   px-8 py-3.5 rounded-full
-                                   shadow-lg hover:scale-105 transition-transform"
+                    <button
+                        type="button"
+                        onClick={openModal}
+                        className="inline-flex items-center justify-center
+                       bg-white text-gray-800 font-semibold
+                       px-8 py-3.5 rounded-full
+                       shadow-lg hover:scale-105 transition-transform
+                       focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2"
                     >
                         Get Started Risk Free
                         <ArrowRightIcon />
-                    </Link>
+                    </button>
                 </div>
 
             </div>

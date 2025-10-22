@@ -4,6 +4,7 @@ import { Disclosure, DisclosureButton, DisclosurePanel, Transition } from '@head
 import { MinusSmallIcon, PlusSmallIcon } from '@heroicons/react/24/outline'
 import MainButton from '@/components/ui/MainButton'; // Исправлен путь на абсолютный
 import React from "react";
+import Link from 'next/link'; // 1. Не забудьте імпортувати Link
 
 const faqs = [
     {
@@ -72,7 +73,14 @@ export default function Faq() {
                     </dl>
                     {/* Контейнер для центрирования кнопки */}
                     <div className="mt-20 flex justify-center">
-                        <MainButton text="See All FAQs" link="#faq" />
+                        <Link
+                            href="/faqs" // 3. Вкажіть ваше посилання (я припустив, що це /faqs)
+
+                            // 4. Ось стилі, скопійовані з вашої основної кнопки
+                            className="inline-flex items-center justify-center whitespace-nowrap rounded-full h-12 px-6 sm:px-8 font-medium text-base bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 transition-colors duration-200 shadow-md"
+                        >
+                            See All FAQs
+                        </Link>
                     </div>
                 </div>
             </div>

@@ -1,6 +1,6 @@
 // pages/api/submit-form.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { FormData } from '../../components/modals/MultiStepFormModal';
+import { FormData } from '@/components/modals/MultiStepFormModal';
 
 // Заглушка для сервісу email
 const sendConfirmationEmail = async (data: FormData) => {
