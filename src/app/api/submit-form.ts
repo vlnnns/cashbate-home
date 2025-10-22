@@ -1,6 +1,7 @@
-// pages/api/submit-form.ts
+// src/app/api/submit-form.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { FormData } from '@/components/modals/MultiStepFormModal';
+// !!! ВИПРАВЛЕНО: Імпортуємо 'FormData' з 'ModalContext', а не 'MultiStepFormModal' !!!
+import { FormData } from '@/context/ModalContext';
 
 // Заглушка для сервісу email
 const sendConfirmationEmail = async (data: FormData) => {
@@ -26,17 +27,12 @@ const sendConfirmationEmail = async (data: FormData) => {
     `;
 
     // --- ЛОГІКА ВІДПРАВКИ EMAIL ---
-    // У реальному додатку тут буде інтеграція з SendGrid, Resend, Postmark тощо.
-    // Наприклад: await resend.emails.send({ from: '...', to: email, subject, html: body });
-    // ---
-
     console.log("--- SENDING EMAIL ---");
     console.log(`To: ${email}`);
     console.log(`Subject: ${subject}`);
     console.log(body);
     console.log("---------------------");
 
-    // Імітуємо затримку мережі
     return new Promise(resolve => setTimeout(resolve, 1000));
 };
 
@@ -48,18 +44,10 @@ export default async function handler(
         try {
             const formData: FormData = req.body;
 
-            // 1. (Заглушка) Надіслати email-підтвердження користувачу
             await sendConfirmationEmail(formData);
-
-            // 2. (Заглушка) Зберегти дані в базі даних
-            // await db.collection('leads').insertOne(formData);
-
-            // 3. (Заглушка) Надіслати сповіщення команді
-            // await sendInternalNotification(formData);
 
             console.log("Received form data:", formData);
 
-            // Надіслати успішну відповідь
             res.status(200).json({ message: 'Form submitted successfully' });
 
         } catch (error) {
@@ -67,7 +55,6 @@ export default async function handler(
             res.status(500).json({ message: 'Internal Server Error' });
         }
     } else {
-        // Обробляти інші HTTP-методи
         res.setHeader('Allow', ['POST']);
         res.status(405).end(`Method ${req.method} Not Allowed`);
     }
