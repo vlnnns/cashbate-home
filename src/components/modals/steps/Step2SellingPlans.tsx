@@ -70,7 +70,7 @@ export default function Step2SellingPlans() {
                         </div>
                         <div className="flex items-center gap-x-2">
                             <input id="agent-no" name="agent" type="radio" value="no" checked={data.agent === 'no'} onChange={(e) => updateField('agent', e.target.value)} className="h-4 w-4 border-neutral-300 text-blue-600 focus:ring-blue-500" />
-                            <label htmlFor="agent-no" className="text-sm text-neutral-700">No, I don't have an agent yet</label>
+                            <label htmlFor="agent-no" className="text-sm text-neutral-700">No, I don&apost have an agent yet</label>
                         </div>
                     </fieldset>
                     {data.agent === 'no' && (
