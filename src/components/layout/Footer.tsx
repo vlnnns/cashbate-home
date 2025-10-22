@@ -38,7 +38,7 @@ const Footer: React.FC = () => {
     );
 
     return (
-        <footer className="bg-gray-900 text-gray-400 dark:bg-black dark:text-gray-500">
+        <footer className="bg-neutral-800 text-neutral-400 ">
             <div className="container max-w-6xl mx-auto px-4 pt-12 pb-6">
 
                 {/* TOP SECTION: Logo, Disclaimer, and Navigation */}
@@ -49,12 +49,12 @@ const Footer: React.FC = () => {
                         <Logo />
 
                         {/* Disclaimer for Desktop (md:block) */}
-                        <p className="hidden md:block text-sm leading-relaxed text-gray-500 dark:text-gray-400">
+                        <p className="hidden md:block text-sm leading-relaxed text-neutral-500 ">
                             {desktopDisclaimer}
                         </p>
 
                         {/* Disclaimer for Mobile (md:hidden) */}
-                        <p className="md:hidden text-sm leading-relaxed text-gray-500 dark:text-gray-400">
+                        <p className="md:hidden text-sm leading-relaxed text-neutral-500 ">
                             {mobileDisclaimer}
                         </p>
                     </div>
@@ -66,7 +66,7 @@ const Footer: React.FC = () => {
                                 <li key={link.name}>
                                     <a
                                         href={link.href}
-                                        className="text-white hover:text-blue-500 transition-colors text-base font-medium"
+                                        className="text-white hover:text-blue-500 transition-colors text-base font-normal"
                                     >
                                         {link.name}
                                     </a>
@@ -81,7 +81,7 @@ const Footer: React.FC = () => {
 
                     {/* Copyright and Legal Links */}
                     <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-6 text-center sm:text-left">
-                        <p className="text-gray-500">
+                        <p className="text-neutral-500">
                             &copy; {currentYear} Cashbate. All rights reserved.
                         </p>
                         <a href="#terms" className="hover:text-white transition-colors">Terms of Use</a>
@@ -97,9 +97,9 @@ const Footer: React.FC = () => {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 aria-label={social.label}
-                                className="p-2 rounded-full hover:bg-gray-700 transition-colors"
+                                className="p-2 rounded-full hover:bg-neutral-700 transition-colors"
                             >
-                                <social.icon className="w-5 h-5 text-gray-400 hover:text-white" />
+                                <social.icon className="w-5 h-5 text-neutral-400 hover:text-white" />
                             </a>
                         ))}
                     </div>

@@ -5,6 +5,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import MainButton from '@/components/ui/MainButton'
 import Link from 'next/link'
+import MultiStepFormModal from '@/components/modals/MultiStepFormModal';
 
 const navigation = [
     { name: 'How It Works', href: '/how-it-works' },
@@ -41,7 +42,7 @@ export default function Navbar() {
                 {/* Desktop Button & Mobile Toggle */}
                 <div className="flex items-center gap-x-4">
                     <div className="hidden lg:block">
-                        <MainButton text="Get Started Risk Free >>" link="#get-started" />
+                        <MainButton text="Get Started Risk Free >>" />
                     </div>
                     <div className="lg:hidden">
                         <button

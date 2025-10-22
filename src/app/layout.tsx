@@ -3,7 +3,7 @@ import { Poppins } from "next/font/google"; // 1. Импортируем шри�
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-
+import { ModalProvider } from "@/context/ModalContext";
 // 2. Настраиваем шрифт Poppins
 const poppins = Poppins({
     subsets: ["latin"],
@@ -25,13 +25,17 @@ export default function RootLayout({
         <body className={`${poppins.variable} font-sans tracking-tight`}>
         <div className="flex flex-col min-h-screen">
             {/* Navbar будет на всех страницах */}
+            <ModalProvider>
             <Navbar />
 
             {/* Здесь будет отображаться содержимое страницы (page.tsx) */}
-            <main className="flex-grow">{children}</main>
+            <main className="flex-grow">
+                    {children}
+            </main>
 
             {/* Footer будет на всех страницах */}
             <Footer />
+            </ModalProvider>
         </div>
         </body>
         </html>
