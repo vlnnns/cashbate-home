@@ -16,6 +16,7 @@ body {
   /* Шрифт Poppins добавлен в начало списка, он будет использоваться в первую очередь */
   font-family: 'Poppins', var(--font-sans), sans-serif;
   transition: background 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
 }
 
 /* Optional: For more control over links in dark mode */

@@ -33,7 +33,7 @@ export default function HeroAddressForm({ ctaLabel }: HeroAddressFormProps) {
             aria-label="Property address form"
         >
             {/* !!! ЗМІНЕНО: rounded-[36px] -> rounded-full, p-2 -> p-1.5 (трохи менше) */}
-            <div className="flex flex-col sm:flex-row items-stretch gap-3 sm:gap-2 bg-white/90 backdrop-blur-md shadow-xl rounded-full p-1.5">
+            <div className="flex flex-col sm:flex-row items-stretch gap-2 bg-white/90 backdrop-blur-md shadow-xl rounded-4xl sm:rounded-full p-2 sm:p-1.5">
                 <label htmlFor="hero-address" className="sr-only">
                     Enter Property Address
                 </label>
@@ -46,12 +46,12 @@ export default function HeroAddressForm({ ctaLabel }: HeroAddressFormProps) {
                     value={localAddress} // 7. Керуємо локальним станом
                     onChange={(e) => setLocalAddress(e.target.value)} // 8. Оновлюємо локальний стан
                     // !!! ЗМІНЕНО: h-14 sm:h-16 -> h-12, text-[16px] sm:text-lg -> text-base (зроблено нижчим)
-                    className="flex-1 h-12 rounded-full bg-transparent px-5 sm:pl-6 text-base text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-0"
+                    className="flex-1 rounded-full bg-transparent py-3 px-5 sm:pl-6 text-sm sm:text-base text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-0"
                 />
                 <button
                     type="submit"
                     // !!! ЗМІНЕНО: h-14 sm:h-16 -> h-12, text-base sm:text-lg -> text-base (зроблено нижчим)
-                    className="inline-flex items-center justify-center whitespace-nowrap rounded-full h-12 px-6 sm:px-8 font-medium text-base bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 transition-colors duration-200 shadow-md"
+                    className="inline-flex items-center justify-center whitespace-nowrap rounded-full h-12 px-6 sm:px-8 font-medium text-sm sm:text-base bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 transition-colors duration-200 shadow-md"
                 >
                     {ctaLabel}
                 </button>
