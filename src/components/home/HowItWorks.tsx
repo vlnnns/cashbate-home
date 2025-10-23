@@ -1,28 +1,21 @@
 'use client'
 import React, { useRef, useState, useEffect } from 'react';
-import Link from 'next/link'; // 1. Не забудьте імпортувати 'Link'
-// Определяем тип для одного шага
+import Link from 'next/link'; // 1. Link вже імпортовано
+
+// ... (код StepItem залишається без змін) ...
 interface Step {
     title: string;
     description: string;
 }
-
-// Определяем пропсы для компонента StepItem
 interface StepItemProps {
     step: Step;
 }
-
-// Определяем тип для стилей плавающего фона
 interface HighlighterStyle {
     transform: string;
     height?: string;
     width?: string;
     opacity: number;
 }
-
-/**
- * Компонент для отдельного шага (теперь без логики фона)
- */
 const StepItem = ({ step }: StepItemProps) => {
     return (
         <div className="relative py-4 lg:py-6">
@@ -43,12 +36,15 @@ const StepItem = ({ step }: StepItemProps) => {
         </div>
     );
 };
+// ... (кінець StepItem) ...
+
 
 /**
  * Главный компонент "How It Works" с плавно перемещающимся фоном.
  */
 const HowItWorksSection = () => {
     const stepsData: Step[] = [
+        // ... (ваші дані stepsData) ...
         {
             title: "Check Eligibility",
             description: "Enter your address to see if your home qualifies.",
@@ -71,7 +67,7 @@ const HowItWorksSection = () => {
     const [activeStepIndex, setActiveStepIndex] = useState(0);
     const [highlighterStyle, setHighlighterStyle] = useState<HighlighterStyle>({ transform: 'translateY(0px)', opacity: 0 });
 
-    // Эффект для обновления позиции плавающего фона
+    // ... (код useEffect для highlighterStyle) ...
     useEffect(() => {
         const activeStepElement = stepRefs.current[activeStepIndex];
 
@@ -85,7 +81,7 @@ const HowItWorksSection = () => {
         }
     }, [activeStepIndex]);
 
-    // Инициализация Intersection Observer для отслеживания активного шага
+    // ... (код useEffect для Intersection Observer) ...
     useEffect(() => {
         const observer = new IntersectionObserver(
             (entries) => {
@@ -120,6 +116,7 @@ const HowItWorksSection = () => {
         };
     }, []);
 
+
     return (
         <section className=" py-20 lg:py-32 antialiased" style={{
             backgroundImage: `url('/blue-bg.png')`,
@@ -151,9 +148,13 @@ const HowItWorksSection = () => {
                             data-index={index}
                             className="mb-8 relative"
                         >
-                            <StepItem
-                                step={step}
-                            />
+                            {/* !!! ЗМІНА ТУТ: Додано Link, що обгортає StepItem !!! */}
+                            <Link href="/how-it-works">
+                                <StepItem
+                                    step={step}
+                                />
+                            </Link>
+                            {/* !!! Кінець зміни !!! */}
                         </div>
                     ))}
                     <div className="h-5"></div>
@@ -162,7 +163,7 @@ const HowItWorksSection = () => {
                 {/* Call to Action Button */}
                 <div className="mt-16 text-center">
                     <Link
-                        href="/how-it-works" // 2. Вкажіть посилання тут
+                        href="/how-it-works"
                         className="inline-flex items-center bg-white text-neutral-700 font-semibold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
                     >
                         See Full Process
@@ -177,4 +178,3 @@ const HowItWorksSection = () => {
 };
 
 export default HowItWorksSection;
-
