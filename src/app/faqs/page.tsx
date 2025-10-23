@@ -1,8 +1,11 @@
 "use client";
 
+// 1. Імпортуйте 'Image'
 import { useState } from 'react';
+import Image from 'next/image';
 import MainButton from "@/components/ui/MainButton";
 
+// ... (код faqData залишається без змін) ...
 const faqData = [
     {
         question: "What is CASHBATE?",
@@ -45,14 +48,13 @@ const faqData = [
         answer: "A Comparative Market Analysis (CMA) report is an estimate of a home&apos;s value based on recently sold, similar properties in the immediate area. It&apos;s a key tool for setting a competitive and realistic listing price."
     },
 ];
-
+// ... (код AccordionItem залишається без змін) ...
 interface AccordionItemProps {
     question: string;
     answer: React.ReactNode;
     isOpen: boolean;
     onClick: () => void;
 }
-
 const AccordionItem = ({ question, answer, isOpen, onClick }: AccordionItemProps) => {
     return (
         <div className="border-b border-gray-200 py-6">
@@ -86,16 +88,16 @@ const AccordionItem = ({ question, answer, isOpen, onClick }: AccordionItemProps
 
 // Основний компонент сторінки
 export default function FaqsPage() {
-
-    // !!! ЗМІНА 1: Стан тепер зберігає МАСИВ індексів. [0] означає, що перший елемент відкритий за замовчуванням
     const [openIndexes, setOpenIndexes] = useState<number[]>([0]);
 
-    // !!! ЗМІНА 2: Нова логіка для додавання/видалення індексів з масиву
+    // 2. Додаємо стан для відстеження завантаження фону
+    const [isLoaded, setIsLoaded] = useState(false);
+
     const handleToggle = (index: number) => {
         setOpenIndexes((prevIndexes) =>
             prevIndexes.includes(index)
-                ? prevIndexes.filter((i) => i !== index) // Видалити, якщо індекс вже є (закрити)
-                : [...prevIndexes, index] // Додати, якщо індексу немає (відкрити)
+                ? prevIndexes.filter((i) => i !== index)
+                : [...prevIndexes, index]
         );
     };
 
@@ -103,10 +105,22 @@ export default function FaqsPage() {
         <div>
             <main>
                 {/* === Hero Section === */}
-                <section className="relative py-24 sm:py-32 overflow-hidden" style={{
-                    backgroundImage: `url('/faq-bg.png')`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'bottom'}}>
+                {/* 3. Прибираємо 'style' з 'section' */}
+                <section className="relative py-24 sm:py-32 overflow-hidden">
+
+                    {/* 4. Додаємо компонент <Image> для фону */}
+                    <Image
+                        src="/faq-bg.png"
+                        alt="FAQ page background"
+                        fill
+                        priority
+                        className={`object-cover object-bottom transition-opacity duration-1000 ease-in-out ${
+                            isLoaded ? 'opacity-100' : 'opacity-0'
+                        }`}
+                        onLoad={() => setIsLoaded(true)}
+                    />
+
+                    {/* Контент секції (залишається без змін) */}
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10" >
                         <div className="max-w-xl">
                             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-neutral-700 tracking-tight">
@@ -126,10 +140,7 @@ export default function FaqsPage() {
                                     key={index}
                                     question={faq.question}
                                     answer={faq.answer}
-
-                                    // !!! ЗМІНА 3: Перевіряємо, чи індекс є в масиві
                                     isOpen={openIndexes.includes(index)}
-
                                     onClick={() => handleToggle(index)}
                                 />
                             ))}
