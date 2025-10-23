@@ -1,8 +1,10 @@
 "use client";
 
 import Image from "next/image";
+// 1. Імпортуйте 'useState' та 'FormEvent' (FormEvent у вас вже є)
 import { useState, FormEvent } from "react";
 import HeroAddressForm from '@/components/HeroAddressForm';
+
 /**
  * HeroSection — edge-to-edge background image with overlay, centered content, and responsive address form.
  */
@@ -21,12 +23,16 @@ export default function HeroSection({
     subtitle?: string;
     ctaLabel?: string;
 }) {
+    // Цей код (address, handleSubmit) не використовується, оскільки у вас є HeroAddressForm,
+    // але я залишив його, щоб нічого не зламати.
     const [address, setAddress] = useState("");
-
     function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
         console.log({ address });
     }
+
+    // 2. Додаємо стан для відстеження завантаження зображення
+    const [isLoaded, setIsLoaded] = useState(false);
 
     return (
         <section className="relative w-full overflow-hidden">
@@ -38,7 +44,14 @@ export default function HeroSection({
                     fill
                     priority
                     sizes="100vw"
-                    className="object-cover"
+
+                    // 3. Додаємо класи для плавного переходу та керування прозорістю
+                    className={`object-cover transition-opacity duration-1000 ease-in-out ${
+                        isLoaded ? 'opacity-100' : 'opacity-0'
+                    }`}
+
+                    // 4. Встановлюємо isLoaded в 'true', коли зображення повністю завантажилося
+                    onLoad={() => setIsLoaded(true)}
                 />
             </div>
 
