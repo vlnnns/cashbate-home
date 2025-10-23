@@ -1,39 +1,35 @@
 "use client";
-// Changed 'Whatsapp' to 'Phone' or 'MessageSquare' since 'Whatsapp' is often not available.
-// I will use MessageSquare to better represent a chat/message icon as seen in the screenshot.
-import { Instagram, Facebook, Mail, MessageSquare } from 'lucide-react'; // Using lucide-react for icons
+import { Instagram, Facebook, Mail, MessageSquare } from 'lucide-react';
+import Image from 'next/image';
 
-// Data for navigation links
 const navLinks = [
-    { name: 'How It Works', href: '#' },
-    { name: 'What’s Included', href: '#' },
-    { name: 'FAQs', href: '#' },
-    { name: 'Why CASHBATE', href: '#' },
+    { name: 'How It Works', href: '/how-it-works' },
+    { name: 'What’s Included', href: '/whats-included' },
+    { name: 'FAQs', href: '/faqs' },
+    { name: 'Why CASHBATE', href: '/why-cashbate' },
 ];
 
-// Data for social media links (using placeholder links)
 const socialLinks = [
     { icon: Instagram, href: '#instagram', label: 'Instagram' },
     { icon: Facebook, href: '#facebook', label: 'Facebook' },
     { icon: Mail, href: '#email', label: 'Email' },
-    // Using MessageSquare as a generic chat/message icon instead of the unavailable 'Whatsapp'
     { icon: MessageSquare, href: '#whatsapp', label: 'WhatsApp' },
 ];
 
-/**
- * Responsive footer component for the CASHBATE website.
- */
 const Footer: React.FC = () => {
-    // Disclaimers as requested
     const desktopDisclaimer = "CASHBATE is not a contractor. All work is performed by licensed and insured contractors who meet strict standards. We provide the incentive and risk-sharing structure that helps homeowners sell faster and for more.";
     const mobileDisclaimer = "CASHBATE is not a contractor. Work is performed by licensed and insured professionals.";
-
     const currentYear = new Date().getFullYear();
 
-    // Simple SVG for the CASHBATE logo (you'd replace this with your official SVG/image)
     const Logo = () => (
         <div className="flex items-center space-x-2">
-            <img src="/logos/logo-white.png" alt="logo" className="w-36"/>
+            <Image
+                src="/logos/logo-white.png"
+                alt="logo"
+                className="w-36 h-auto"
+                width={144}
+                height={30}
+            />
         </div>
     );
 
@@ -45,23 +41,27 @@ const Footer: React.FC = () => {
                 <div className="flex flex-col md:flex-row justify-between border-b border-gray-700/50 pb-8 space-y-10 md:space-y-0">
 
                     {/* Logo and Disclaimer Column */}
-                    <div className="w-full md:w-5/12 space-y-4">
+                    {/* !!! ЗМІНЕНО: Додано 'flex flex-col items-center md:items-start' для центрування на мобільному !!! */}
+                    <div className="w-full md:w-5/12 space-y-4 flex flex-col items-center md:items-start">
                         <Logo />
 
                         {/* Disclaimer for Desktop (md:block) */}
-                        <p className="hidden md:block text-sm leading-relaxed text-neutral-500 ">
+                        {/* !!! ЗМІНЕНО: Додано 'md:text-left' (text-center тепер успадковується) !!! */}
+                        <p className="hidden md:block text-sm leading-relaxed text-neutral-500 text-center md:text-left">
                             {desktopDisclaimer}
                         </p>
 
                         {/* Disclaimer for Mobile (md:hidden) */}
-                        <p className="md:hidden text-sm leading-relaxed text-neutral-500 ">
+                        {/* !!! ЗМІНЕНО: Додано 'text-center' !!! */}
+                        <p className="md:hidden text-sm leading-relaxed text-neutral-500 text-center">
                             {mobileDisclaimer}
                         </p>
                     </div>
 
                     {/* Navigation Links Column (Right side on desktop) */}
                     <div className="w-full md:w-fit">
-                        <ul className="flex flex-col sm:flex-row md:flex-row md:space-x-8 space-y-3 sm:space-y-0">
+                        {/* !!! ЗМІНЕНО: Додано 'justify-center md:justify-start' !!! */}
+                        <ul className="flex flex-row flex-wrap justify-center gap-x-6 gap-y-3 md:flex-nowrap md:justify-start md:gap-x-8">
                             {navLinks.map((link) => (
                                 <li key={link.name}>
                                     <a
@@ -77,7 +77,8 @@ const Footer: React.FC = () => {
                 </div>
 
                 {/* BOTTOM SECTION: Copyright, Legal, and Social Icons */}
-                <div className="flex flex-col sm:flex-row justify-between items-center pt-6 space-y-4 sm:space-y-0 text-sm">
+                {/* (Цей блок вже мав 'items-center', 'text-center' та 'flex-col-reverse', тому він вже центрується на мобільному) */}
+                <div className="flex flex-col-reverse sm:flex-row justify-between items-center pt-6 space-y-4 sm:space-y-0 text-sm">
 
                     {/* Copyright and Legal Links */}
                     <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-6 text-center sm:text-left">
