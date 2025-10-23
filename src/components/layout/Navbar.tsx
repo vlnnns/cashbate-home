@@ -1,11 +1,12 @@
 'use client'
 
-import { useState, Fragment } from 'react'
+// 1. Імпортуйте 'useState' та 'useEffect'
+import { useState, Fragment, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import MainButton from '@/components/ui/MainButton'
 import Link from 'next/link'
-import Image from 'next/image' // 1. Імпортуйте 'Image'
+import Image from 'next/image'
 
 const navigation = [
     { name: 'How It Works', href: '/how-it-works' },
@@ -17,11 +18,21 @@ const navigation = [
 export default function Navbar() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
+    // 2. Додаємо стан, щоб відстежити, чи компонент "змонтований"
+    const [isMounted, setIsMounted] = useState(false)
+
+    // 3. Встановлюємо 'isMounted' в 'true' тільки на клієнті
+    useEffect(() => {
+        setIsMounted(true)
+    }, [])
+
     const LOGO_WIDTH = 140;
     const LOGO_HEIGHT = 32;
 
     return (
-        <header className="relative z-50">
+        // 4. Робимо хедер прозорим, поки 'isMounted' не стане 'true'
+        // Це запобігає "стрибкам" під час завантаження
+        <header className={`relative z-50 transition-opacity duration-300 ${isMounted ? 'opacity-100' : 'opacity-0'}`}>
             <nav className="flex items-center justify-between py-6 max-w-7xl mx-auto px-4">
                 {/* Logo and Desktop Links */}
                 <div className="flex items-center gap-x-12">
@@ -49,42 +60,43 @@ export default function Navbar() {
                     </div>
                 </div>
 
-                {/* --- !!! ЗМІНЕНО: Блок кнопок --- */}
+                {/* --- Блок кнопок --- */}
                 <div className="flex items-center gap-x-4">
 
-                    {/* Кнопка для ДЕСКТОПУ (залишається незмінною) */}
+                    {/* Кнопка для ДЕСКТОПУ */}
                     <div className="hidden lg:block">
                         <MainButton text="Get Started Risk Free >>" />
                     </div>
 
-                    {/* Кнопки для МОБІЛЬНОЇ ВЕРСІЇ (lg:hidden) */}
-                    {/* Додано 'flex' та 'gap-x-2' */}
+                    {/* Кнопки для МОБІЛЬНОЇ ВЕРСІЇ */}
                     <div className="flex items-center gap-x-2 lg:hidden">
-                        {/* 1. Кнопка "Get Started" (маленька) */}
-                        <MainButton text="Get Started Risk Free >>" />
 
-                        {/* 2. Кнопка "Бургер" (відкрити меню) */}
+                        {/* 5. ВИПРАВЛЕНО: Текст кнопки скорочено та додано стилі для мобільної версії */}
+                        <MainButton
+                            text="Get Started"
+                            className="py-2 px-4 text-sm" // Робить кнопку меншою
+                        />
+
+                        {/* 6. ВИПРАВЛЕНО: Додано 'p-2' для збільшення області кліку */}
                         <button
                             type="button"
                             onClick={() => setMobileMenuOpen(true)}
-                            className="cursor-pointer inline-flex items-center justify-center rounded-md text-gray-700"
+                            className="cursor-pointer inline-flex items-center justify-center rounded-md p-2 text-gray-700"
                         >
                             <span className="sr-only">Open menu</span>
                             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
                         </button>
                     </div>
                 </div>
-                {/* --- Кінець зміненого блоку --- */}
             </nav>
 
-            {/* Fullscreen Mobile Menu (ТУТ ЗМІН НЕМАЄ) */}
+            {/* Fullscreen Mobile Menu (Без змін) */}
             <Transition show={mobileMenuOpen} as={Fragment}>
                 <Dialog
                     as="div"
                     className="fixed inset-0 z-50"
                     onClose={() => setMobileMenuOpen(false)}
                 >
-                    {/* Backdrop */}
                     <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
 
                     <Transition.Child
@@ -96,7 +108,6 @@ export default function Navbar() {
                         leaveFrom="translate-y-0 opacity-100"
                         leaveTo="-translate-y-full opacity-0"
                     >
-                        {/* Ця панель (відкрите меню) залишається без змін */}
                         <Dialog.Panel className="fixed inset-0 bg-white flex flex-col p-6">
                             <div className="flex items-center justify-between mb-8">
                                 <Link href="/" className="-m-1.5 p-1.5">
