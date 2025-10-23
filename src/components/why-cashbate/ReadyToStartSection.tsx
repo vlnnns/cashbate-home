@@ -34,7 +34,7 @@ export default function ReadyToStartSection() {
             <div className="relative z-10 max-w-3xl mx-auto text-center py-20 sm:py-36 px-4 sm:px-6 lg:px-8 " >
 
                 {/* Заголовок */}
-                <h2 className="text-4xl font-medium text-white tracking-tight">
+                <h2 className="text-3xl sm:text-4xl font-medium text-white tracking-tight">
                     Ready to see if CASHBATE
                     <br className="hidden sm:block" />
                     is the right fit for your home?
@@ -46,7 +46,7 @@ export default function ReadyToStartSection() {
                         onClick={openModal}
                         className="inline-flex items-center justify-center
                        bg-white text-gray-800 font-semibold
-                       px-8 py-3.5 rounded-full
+                       px-4 py-3 text-xs m:text-base sm:px-8 sm:py-3.5 rounded-full
                        shadow-lg hover:scale-105 transition-transform
                        focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2"
                     >
@@ -55,7 +55,7 @@ export default function ReadyToStartSection() {
                     </button>
                 </div>
 
-                <p className="mt-6 text-xs text-white/70 max-w-md mx-auto">
+                <p className="mt-6 text-[10px] sm:text-xs text-white/70 max-w-md mx-auto">
                     No upfront cost. Covered up to the base solution value. If your home doesn&apos;t
                     sell within 6 months at market price, you owe $0.
                 </p>

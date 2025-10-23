@@ -133,7 +133,7 @@ const AgentsCarousel = () => {
                         {/* Кнопка CTA */}
                         <Link
                             href="/connect-agent"
-                            className="mt-8 inline-block bg-blue-600 text-white font-semibold px-14 py-3 rounded-full hover:bg-blue-700 transition"
+                            className="mt-8 inline-block bg-blue-600 text-white text-sm font-semibold px-10 sm:px-14 py-3 rounded-full hover:bg-blue-700 transition"
                         >
                             No agent yet?
                         </Link>

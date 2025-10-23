@@ -15,7 +15,7 @@ export default function WhatIsIncludedSection() {
                     src="/included.png" // !!! ШЛЯХ ДО ВАШОГО ЗОБРАЖЕННЯ !!!
                     alt="Happy couple reviewing documents"
                     fill
-                    className="object-cover object-center"
+                    className="object-cover object-[65%_50%] sm:object-center"
                     priority
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
                 />

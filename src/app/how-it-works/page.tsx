@@ -21,9 +21,9 @@ export default function HowItWorksPage() {
                             alt="Man holding paper cutout of a house"
                             fill
                             priority
-                            // ЗМІНЕНО: Тепер зображення заповнює весь фон
-                            className="object-cover object-top "
+                            className="object-cover object-[85%_50%] sm:object-center"
                         />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#F7F7F7] to-transparent to-80% sm:to-50%" />
                     </div>
 
                     {/* === Text block === */}
@@ -34,7 +34,7 @@ export default function HowItWorksPage() {
                         </h1>
 
                         {/* ЗМІНЕНО: Колір тексту на світло-сірий */}
-                        <p className="mt-5 text-lg sm:text-xl leading-tight text-neutral-500">
+                        <p className="mt-5 text-ьв sm:text-xl leading-tight text-neutral-700">
                             A simple, step-by-step process to sell faster
                             <br className="hidden sm:block" />
                             and for more — with no upfront cost.
