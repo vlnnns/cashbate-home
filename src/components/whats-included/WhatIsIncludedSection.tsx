@@ -32,7 +32,7 @@ export default function WhatIsIncludedSection() {
                             Included <br /></span>
                             <span className="font-thin">With CASHBATE</span>
                         </h2>
-                        <p className="mt-6 text-md max-w-xl font-light">
+                        <p className="mt-6 text-sm sm:text-md max-w-xl font-light">
                             Every home is different. CASHBATE covers cosmetic upgrades up to the
                             base package value, with no upfront cost for covered work. The exact
                             scope is determined during your pre-qualification review, based on your
@@ -43,10 +43,10 @@ export default function WhatIsIncludedSection() {
                     <div className="flex-shrink-0">
                         <button
                             type="button"
-                            onClick={openModal} // 5. Викликаємо openModal при кліку
+                            onClick={openModal}
                             className="inline-flex items-center justify-center
                        bg-white text-gray-800 font-semibold
-                       px-8 py-3.5 rounded-full
+                        px-4 py-3 text-xs m:text-base sm:px-8 sm:py-3.5 rounded-full
                        shadow-lg hover:scale-105 transition-transform
                        focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2"
                         >

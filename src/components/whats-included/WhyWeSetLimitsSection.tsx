@@ -31,14 +31,14 @@ export default function WhyWeSetLimitsSection() {
                 <div className="grid grid-cols-1 lg:grid-cols-2 items-start gap-10 lg:gap-20">
                     {/* Ліва колонка: Заголовок */}
                     <div>
-                        <h2 className="text-4xl font-semibold tracking-tight leading-tight">
+                        <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight leading-tight">
                             Why We Set Limits
                         </h2>
                     </div>
 
                     {/* Права колонка: Опис */}
                     <div>
-                        <p className="text-md leading-relaxed max-w-lg lg:ml-auto font-thin">
+                        <p className="text-sm sm:text-md leading-normal max-w-lg lg:ml-auto font-thin">
                             CASHBATE is a risk-sharing solution, not a contractor.
                             We only cover cosmetic updates that deliver maximum
                             value for your sale. If your home qualifies, it means we&apos;re
