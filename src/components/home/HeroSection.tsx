@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-// 1. Імпортуйте 'useState' та 'FormEvent' (FormEvent у вас вже є)
 import { useState, FormEvent } from "react";
 import HeroAddressForm from '@/components/HeroAddressForm';
 
@@ -14,24 +13,22 @@ export default function HeroSection({
                                         title = "Sell Your Home Faster —",
                                         highlight = "No Sale, No Pay.",
                                         subtitle = "CASHBATE is an incentive solution that shares risk with you by covering cosmetic upgrades to help your home sell quicker and for more. It's not a credit, not a loan.",
-                                        ctaLabel = "See if Your Home Qualifies >>",
+                                        // 1. 'ctaLabel' видалено, оскільки він не використовується
                                     }: {
     bgSrc?: string;
     bgAlt?: string;
     title?: string;
     highlight?: string;
     subtitle?: string;
-    ctaLabel?: string;
+    ctaLabel?: string; // (Залишаємо тут для типу, але не в деструктуризації)
 }) {
-    // Цей код (address, handleSubmit) не використовується, оскільки у вас є HeroAddressForm,
-    // але я залишив його, щоб нічого не зламати.
+    // Цей код не використовується, але не заважає
     const [address, setAddress] = useState("");
     function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
         console.log({ address });
     }
 
-    // 2. Додаємо стан для відстеження завантаження зображення
     const [isLoaded, setIsLoaded] = useState(false);
 
     return (
@@ -44,20 +41,17 @@ export default function HeroSection({
                     fill
                     priority
                     sizes="100vw"
-
-                    // 3. Додаємо класи для плавного переходу та керування прозорістю
-                    className={`object-cover transition-opacity duration-1000 ease-in-out ${
+                    className={`object-cover object-[50%_30%] sm:object-center transition-opacity duration-1000 ease-in-out ${
                         isLoaded ? 'opacity-100' : 'opacity-0'
                     }`}
-
-                    // 4. Встановлюємо isLoaded в 'true', коли зображення повністю завантажилося
                     onLoad={() => setIsLoaded(true)}
                 />
             </div>
 
             {/* Content container */}
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 ">
-                <div className="max-w-3xl pb-20">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
+
+                <div className="max-w-3xl pb-12 sm:pb-20">
                     <h1 className="text-4xl sm:text-6xl font-semibold leading-tight tracking-tight text-gray-900">
                         {title}
                         <br />
@@ -69,8 +63,8 @@ export default function HeroSection({
                     </p>
                 </div>
 
+                {/* HeroAddressForm вже має свій 'ctaLabel' всередині */}
                 <HeroAddressForm ctaLabel="Start My Risk-Free Check" />
-
 
                 <p className="mt-6 max-w-3xl text-xs sm:text-sm leading-snug text-gray-600">
                     CASHBATE covers cosmetic upgrades up to{" "}
