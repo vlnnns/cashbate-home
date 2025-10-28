@@ -26,12 +26,10 @@ export default function Navbar() {
         setIsMounted(true)
     }, [])
 
-    const LOGO_WIDTH = 140;
-    const LOGO_HEIGHT = 32;
+    const LOGO_WIDTH = 160;
+    const LOGO_HEIGHT = 52;
 
     return (
-        // 4. Робимо хедер прозорим, поки 'isMounted' не стане 'true'
-        // Це запобігає "стрибкам" під час завантаження
         <header className={`relative z-50 transition-opacity duration-300 ${isMounted ? 'opacity-100' : 'opacity-0'}`}>
             <nav className="flex items-center justify-between py-6 max-w-7xl mx-auto px-4">
                 {/* Logo and Desktop Links */}
@@ -41,7 +39,7 @@ export default function Navbar() {
                         <Image
                             src="/logos/logo.png"
                             alt="CASHBATE logo"
-                            className="h-8 w-auto"
+                            className="h-10 w-auto"
                             width={LOGO_WIDTH}
                             height={LOGO_HEIGHT}
                             priority

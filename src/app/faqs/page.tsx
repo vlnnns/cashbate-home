@@ -104,17 +104,14 @@ export default function FaqsPage() {
     return (
         <div>
             <main>
-                {/* === Hero Section === */}
-                {/* 3. Прибираємо 'style' з 'section' */}
                 <section className="relative py-24 sm:py-32 overflow-hidden">
 
-                    {/* 4. Додаємо компонент <Image> для фону */}
                     <Image
                         src="/faq-bg.png"
                         alt="FAQ page background"
                         fill
                         priority
-                        className={`object-cover object-bottom transition-opacity duration-1000 ease-in-out ${
+                        className={`object-cover scale-150 object-[70%_50%] sm:object-bottom  transition-opacity duration-1000 ease-in-out ${
                             isLoaded ? 'opacity-100' : 'opacity-0'
                         }`}
                         onLoad={() => setIsLoaded(true)}
