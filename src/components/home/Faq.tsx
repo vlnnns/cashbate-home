@@ -77,7 +77,7 @@ export default function Faq() {
                             href="/faqs" // 3. Вкажіть ваше посилання (я припустив, що це /faqs)
 
                             // 4. Ось стилі, скопійовані з вашої основної кнопки
-                            className="inline-flex items-center justify-center whitespace-nowrap rounded-full h-12 px-6 sm:px-8 font-medium text-base bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 transition-colors duration-200 shadow-md"
+                            className="inline-flex items-center justify-center whitespace-nowrap rounded-full h-12 px-6 sm:px-8 font-medium  text-xs sm:text-base bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 transition-colors duration-200 shadow-md"
                         >
                             See All FAQs
                         </Link>
