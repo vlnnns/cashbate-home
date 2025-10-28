@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import Image from 'next/image';
 // --- Імпорт Swiper ---
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
@@ -31,18 +32,14 @@ const differenceData = [
     },
 ];
 
-// --- СТРІЛКА ВЛІВО (ОНОВЛЕНО) ---
-// Більше не приймає 'onClick'. Swiper керуватиме нею
-// через клас "prev-arrow"
+// --- СТРІЛКА ВЛІВО (без змін) ---
 const ChevronLeftIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <polyline points="15 18 9 12 15 6"></polyline>
     </svg>
 );
 
-// --- СТРІЛКА ВПРАВО (ОНОВЛЕНО) ---
-// Більше не приймає 'onClick'. Swiper керуватиме нею
-// через клас "next-arrow"
+// --- СТРІЛКА ВПРАВО (без змін) ---
 const ChevronRightIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <polyline points="9 18 15 12 9 6"></polyline>
@@ -52,12 +49,11 @@ const ChevronRightIcon = () => (
 
 // Основний компонент секції
 export default function DifferenceSection() {
-    // --- useRef та функція scroll() видалені ---
 
     return (
         <section className=" py-20 sm:py-28 max-w-7xl mx-auto">
-            <div className="px-4"> {/* Додано 'px-4' для мобільних */}
-                {/* Заголовок */}
+            <div className="px-4">
+                {/* Заголовок (без змін) */}
                 <div className="text-center sm:text-left mb-12">
                     <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-neutral-700 tracking-tight">
                         What Makes
@@ -66,42 +62,47 @@ export default function DifferenceSection() {
                     </h2>
                 </div>
 
-                {/* --- ВПРОВАДЖЕННЯ SWIPER --- */}
+                {/* --- SWIPER (без змін) --- */}
                 <div className="relative">
                     <Swiper
                         modules={[Navigation]}
                         navigation={{
-                            nextEl: ".next-arrow-diff", // Унікальні класи для кнопок
+                            nextEl: ".next-arrow-diff",
                             prevEl: ".prev-arrow-diff",
                         }}
                         loop={true}
-                        spaceBetween={16} // Ваш 'space-x-4'
-                        slidesPerView={1.2} // Мобільні
+                        spaceBetween={16}
+                        slidesPerView={1.2}
                         breakpoints={{
-                            640: { // sm
+                            640: {
                                 slidesPerView: 2.5,
                             },
-                            1024: { // lg
+                            1024: {
                                 slidesPerView: 4,
                             },
                         }}
-                        // Додаємо відступ знизу для тіні
                         className="pb-8"
                     >
                         {differenceData.map((item, index) => (
                             <SwiperSlide key={index}>
-                                {/* 'w-72' та 'flex-shrink-0' більше не потрібні,
-                                  Swiper керує цим.
-                                */}
                                 <div
-                                    className="flex flex-col justify-between h-96 bg-white rounded-xl p-8 shadow-lg" // Додав 'shadow-lg'
+                                    className="flex flex-col justify-between h-100 bg-white rounded-xl p-6 shadow-lg"
                                 >
+                                    {/* Верхня частина (Заголовок) */}
                                     <div>
-                                        <h3 className="text-2xl font-medium text-neutral-700">{item.title}</h3>
+                                        {/* !!! ЗМІНЕНО: 'min-h-20' -> 'min-h-16' (зменшено для економії) */}
+                                        <h3 className="text-2xl font-medium text-neutral-700 min-h-16">{item.title}</h3>
                                     </div>
 
-                                    {/* Опис (нижня частина) */}
+                                    {/* Нижня частина (Іконка + Опис) */}
                                     <div>
+                                        <Image
+                                            src={`/puzzles/${index + 1}.png`}
+                                            alt=""
+                                            width={170} // Ваш розмір
+                                            height={170} // Ваш розмір
+                                            className="mb-3"
+                                        />
                                         <p className="text-xs text-gray-500 leading-tight tracking-tight">{item.description}</p>
                                     </div>
                                 </div>
@@ -110,18 +111,16 @@ export default function DifferenceSection() {
                     </Swiper>
                 </div>
 
-                {/* Кнопки навігації (додано унікальні класи) */}
+                {/* Кнопки навігації (без змін) */}
                 <div className="mt-8 flex justify-center sm:justify-start space-x-4">
                     <button
                         aria-label="Scroll left"
-                        // Унікальний клас "prev-arrow-diff"
                         className="prev-arrow-diff h-10 w-10 flex items-center justify-center rounded-full bg-neutral-200 text-neutral-500  hover:bg-neutral-300 transition"
                     >
                         <ChevronLeftIcon />
                     </button>
                     <button
                         aria-label="Scroll right"
-                        // Унікальний клас "next-arrow-diff"
                         className="next-arrow-diff h-10 w-10 flex items-center justify-center rounded-full bg-neutral-200 text-neutral-500  hover:bg-neutral-300  transition"
                     >
                         <ChevronRightIcon />
