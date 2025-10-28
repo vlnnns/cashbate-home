@@ -17,7 +17,9 @@ export default function HomePage() {
             <CashBateCarousel />
             <Faq />
             <Stats />
-            <ImageCarousel />
+            <div id="examples-carousel" className="scroll-mt-20">
+                <ImageCarousel />
+            </div>
             <Why />
         </>
     );

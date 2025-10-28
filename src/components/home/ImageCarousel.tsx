@@ -45,10 +45,10 @@ const ImageCarousel = () => {
         { image: '/beforeAfter/3.png', alt: 'Renovation of bathroom' },
     ];
 
-    // Updated the manual scroll function
+
     const scroll = (direction: 'left' | 'right') => {
         const root = carouselRef.current;
-        // Ensure the ref is set and it has children
+
         if (!root || root.children.length === 0) return;
 
         // Get the first slide element to calculate its full width including margin
@@ -128,7 +128,7 @@ const ImageCarousel = () => {
                                 // Restored original slide classes
                                 className="flex-none w-[85%] sm:w-[70%] snap-center"
                             >
-                                <div className="relative h-[420px] rounded-2xl overflow-hidden">
+                                <div className="relative aspect-video sm:aspect-auto sm:h-[420px] rounded-2xl overflow-hidden">
                                     {/* Replaced next/image with a standard <img> tag.
                                       Used CSS to replicate the `fill` and `object-cover` behavior.
                                     */}

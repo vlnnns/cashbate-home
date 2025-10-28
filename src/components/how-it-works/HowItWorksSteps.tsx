@@ -30,7 +30,7 @@ export default function HowItWorksSteps() {
             text: (
                 <>
                     We identify the cosmetic updates most likely to deliver the best ROI for your sale.{" "}
-                    <Link href="/whats-included" className="text-blue-600 hover:underline">
+                    <Link href="/#examples-carousel" className="text-blue-600 hover:underline">
                         See examples here ››
                     </Link>
                 </>
