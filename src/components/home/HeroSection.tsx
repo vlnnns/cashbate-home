@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState, FormEvent } from "react";
-import HeroAddressForm from '@/components/HeroAddressForm';
+import HeroAddressForm from '@/components/ui/HeroAddressForm';
 
 /**
  * HeroSection — edge-to-edge background image with overlay, centered content, and responsive address form.
@@ -57,7 +57,6 @@ export default function HeroSection({
                         <br />
                         <span className="relative inline-block text-blue-600">{highlight}
                             <svg
-                                // 1. Добавлен 'z-[-10]', чтобы SVG ушел "под" текст
                                 className="absolute left-0 bottom-[-15px] w-full h-auto z-[-10]"
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 433 42"

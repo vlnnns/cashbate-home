@@ -18,16 +18,14 @@ export default function HeroAddressForm({ ctaLabel }: HeroAddressFormProps) {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault(); // Запобігаємо перезавантаженню сторінки
 
-        // 4. Оновлюємо поле 'address' у ГЛОБАЛЬНОМУ стані модального вікна
         updateField('address', localAddress);
 
-        // 5. Відкриваємо модальне вікно
         openModal();
     };
 
     return (
         <form
-            onSubmit={handleSubmit} // 6. Використовуємо наш новий обробник
+            onSubmit={handleSubmit}
             // !!! ЗМІНЕНО: max-w-3xl -> max-w-2xl (зроблено вужчим)
             className="relative mt-10 w-full max-w-2xl"
             aria-label="Property address form"

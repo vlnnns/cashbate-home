@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, FormEvent } from "react";
-import HeroAddressForm from "@/components/HeroAddressForm";
+import HeroAddressForm from "@/components/ui/HeroAddressForm";
 
 export default function EligibilityCheckSection() {
     const [address, setAddress] = useState("");
