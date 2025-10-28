@@ -36,7 +36,8 @@ export default function CustomSelect({ value, onChange, options, label, id }: Cu
                             {label}
                         </Listbox.Label>
                         <div className="relative mt-1">
-                            {/* 1. Кнопка (виглядає як інпут) - без змін */}
+                            {/* 1. Кнопка (виглядає як інпут) - без змін
+                                Тут 'truncate' залишається, це коректно для кнопки */}
                             <Listbox.Button
                                 id={id}
                                 className="relative w-full cursor-default rounded-lg border border-neutral-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 sm:text-sm"
@@ -55,8 +56,8 @@ export default function CustomSelect({ value, onChange, options, label, id }: Cu
                                 leaveFrom="opacity-100"
                                 leaveTo="opacity-0"
                             >
-                                {/* !!! ЗМІНЕНО: max-h-24 -> max-h-60 !!! */}
-                                <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-xl bg-white py-1 text-base shadow-lg border border-neutral-200 focus:outline-none sm:text-sm">
+                                {/* !!! ЗМІНЕНО: 'text-base sm:text-sm' -> 'text-sm' (для меншого тексту) */}
+                                <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-xl bg-white py-1 text-sm shadow-lg border border-neutral-200 focus:outline-none">
                                     {options.map((option) => (
                                         <Listbox.Option
                                             key={option}
@@ -69,7 +70,8 @@ export default function CustomSelect({ value, onChange, options, label, id }: Cu
                                         >
                                             {({ selected }) => (
                                                 <>
-                                                    <span className={`block truncate ${selected ? 'font-semibold' : 'font-normal'}`}>
+                                                    {/* !!! ЗМІНЕНО: 'truncate' видалено (для переносу тексту) */}
+                                                    <span className={`block ${selected ? 'font-semibold' : 'font-normal'}`}>
                                                         {option}
                                                     </span>
                                                     {selected ? (

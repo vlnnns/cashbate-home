@@ -3,11 +3,9 @@
 
 import React from 'react';
 import { useModal } from '@/context/ModalContext';
-import CustomSelect from '../CustomSelect'; // 👈 1. Імпортуємо CustomSelect
+import CustomSelect from '../CustomSelect'; // Імпортовано
 
-// !!! ВИДАЛЕНО: 'inputStyle' більше не потрібен
-
-// 2. Оновлено масиви опцій, щоб вони містили плейсхолдери
+// Опції для 'Condition'
 const conditionOptions = [
     'Select condition...',
     'Move-in ready but could use cosmetic updates',
@@ -15,6 +13,7 @@ const conditionOptions = [
     'Needs major repairs or renovations'
 ];
 
+// Опції для 'Timeline'
 const timelineOptions = [
     'Select timeline...',
     'My property is already listed for sale',
@@ -25,6 +24,7 @@ const timelineOptions = [
     'Just exploring'
 ];
 
+// Опції для 'Concern'
 const concernOptions = [
     'Select concern...',
     'Getting the best price',
@@ -33,8 +33,18 @@ const concernOptions = [
     'I don’t want to spend money upfront'
 ];
 
+// !!! НОВЕ: Опції для 'Agent'
+const agentOptions = [
+    'Select an option...',
+    'Yes, I already have an agent',
+    'No, I don\'t have an agent yet'
+];
+
 export default function Step2SellingPlans() {
     const { formData: data, updateField } = useModal();
+
+    // !!! НОВЕ: Зберігаємо повний текст опції "No" для перевірки
+    const agentOptionNo = 'No, I don\'t have an agent yet';
 
     return (
         <div>
@@ -47,7 +57,7 @@ export default function Step2SellingPlans() {
 
             <div className="mt-4 space-y-4">
 
-                {/* !!! ЗМІНЕНО: Використовуємо CustomSelect !!! */}
+                {/* Condition (без змін) */}
                 <div>
                     <CustomSelect
                         id="condition"
@@ -58,29 +68,24 @@ export default function Step2SellingPlans() {
                     />
                 </div>
 
-                {/* Agent (Залишається без змін) */}
+                {/* !!! ЗМІНЕНО: Радіокнопки 'Agent' замінено на CustomSelect !!! */}
                 <div>
-                    <span className="block text-sm font-semibold text-neutral-700 mb-2">
-                        Are you currently working with a real estate agent?
-                    </span>
-                    <fieldset className="space-y-2">
-                        <div className="flex items-center gap-x-2">
-                            <input id="agent-yes" name="agent" type="radio" value="yes" checked={data.agent === 'yes'} onChange={(e) => updateField('agent', e.target.value)} className="h-4 w-4 border-neutral-300 text-blue-600 focus:ring-blue-500" />
-                            <label htmlFor="agent-yes" className="text-sm text-neutral-700">Yes, I already have an agent</label>
-                        </div>
-                        <div className="flex items-center gap-x-2">
-                            <input id="agent-no" name="agent" type="radio" value="no" checked={data.agent === 'no'} onChange={(e) => updateField('agent', e.target.value)} className="h-4 w-4 border-neutral-300 text-blue-600 focus:ring-blue-500" />
-                            <label htmlFor="agent-no" className="text-sm text-neutral-700">No, I don&apost have an agent yet</label>
-                        </div>
-                    </fieldset>
-                    {data.agent === 'no' && (
+                    <CustomSelect
+                        id="agent"
+                        label="Are you currently working with a real estate agent?"
+                        value={data.agent}
+                        onChange={(value) => updateField('agent', value)}
+                        options={agentOptions}
+                    />
+                    {/* !!! ЗМІНЕНО: Умова оновлена, щоб відповідати тексту опції */}
+                    {data.agent === agentOptionNo && (
                         <p className="mt-2 text-xs text-neutral-500 bg-neutral-50 p-3 rounded-md">
                             No problem — we’ll connect you with a top local agent and provide a free CMA report so you know your home’s true market value.
                         </p>
                     )}
                 </div>
 
-                {/* !!! ЗМІНЕНО: Використовуємо CustomSelect !!! */}
+                {/* Timeline (без змін) */}
                 <div>
                     <CustomSelect
                         id="timeline"
@@ -91,7 +96,7 @@ export default function Step2SellingPlans() {
                     />
                 </div>
 
-                {/* !!! ЗМІНЕНО: Використовуємо CustomSelect !!! */}
+                {/* Concern (без змін) */}
                 <div>
                     <CustomSelect
                         id="concern"

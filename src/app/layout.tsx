@@ -1,4 +1,7 @@
-import type { Metadata } from "next";
+// app/layout.tsx
+
+// !!! ЗМІНА: Імпортуємо 'Viewport'
+import type { Metadata, Viewport } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
@@ -11,15 +14,17 @@ const poppins = Poppins({
     variable: "--font-poppins",
 });
 
+// !!! ЗМІНА: 'viewport' видалено звідси
 export const metadata: Metadata = {
     title: "CASHBATE",
     description: "Risk-free home upgrades to sell your house faster",
+};
 
-    viewport: {
-        width: "device-width",
-        initialScale: 1,
-        maximumScale: 1,
-    },
+// !!! ЗМІНА: 'viewport' тепер окремий експорт
+export const viewport: Viewport = {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
 };
 
 export default function RootLayout({

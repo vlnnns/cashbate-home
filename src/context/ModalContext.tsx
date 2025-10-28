@@ -36,7 +36,7 @@ const initialFormData: FormData = {
     squareFootage: '',
     yearBuilt: '',
     condition: 'Select condition...',
-    agent: '',
+    agent: 'Select an option...',
     timeline: 'Select timeline...',
     concern: 'Select concern...',
     firstName: '',
@@ -50,20 +50,33 @@ const LOCAL_STORAGE_KEY = 'multiStepFormData';
 
 // !!! НОВЕ: Функція для безпечного отримання початкових даних
 const getInitialData = (): FormData => {
-    // Перевіряємо, чи ми на клієнті (в браузері)
+    // 1. Повертаємо початкові дані, якщо це сервер
     if (typeof window === 'undefined') {
         return initialFormData;
     }
+
     try {
+        // 2. Намагаємось отримати збережені дані
         const savedData = localStorage.getItem(LOCAL_STORAGE_KEY);
-        // Якщо дані є, парсимо їх, інакше повертаємо початкові
-        return savedData ? JSON.parse(savedData) : initialFormData;
+
+        // !!! ОСЬ ТУТ ЗМІНА: 'let' -> 'const'
+        const data: FormData = savedData ? JSON.parse(savedData) : initialFormData;
+
+        // 3. !!! ГОЛОВНИЙ ФІКС (залишається без змін) !!!
+        // Перевіряємо, чи не збереглося у користувача старе значення (старі радіокнопки)
+        if (data.agent === '' || data.agent === 'yes' || data.agent === 'no') {
+            // Встановлюємо значення з наших нових initialFormData
+            data.agent = initialFormData.agent;
+        }
+
+        // 4. Повертаємо або оновлені, або початкові дані
+        return data;
+
     } catch (error) {
         console.error('Failed to parse form data from localStorage', error);
         return initialFormData; // Повертаємо початкові у разі помилки
     }
 };
-
 // ... (інтерфейс ModalContextType залишається без змін)
 interface ModalContextType {
     isModalOpen: boolean;
