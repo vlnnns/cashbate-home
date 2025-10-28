@@ -8,6 +8,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
+import MainButton from "@/components/ui/MainButton";
 
 // ВИЗНАЧЕННЯ ТИПУ ДЛЯ АГЕНТА
 interface Agent {
@@ -131,12 +132,8 @@ const AgentsCarousel = () => {
                         </div>
 
                         {/* Кнопка CTA */}
-                        <Link
-                            href="/connect-agent"
-                            className="mt-8 inline-block bg-blue-600 text-white text-sm font-semibold px-10 sm:px-14 py-3 rounded-full hover:bg-blue-700 transition"
-                        >
-                            No agent yet?
-                        </Link>
+
+                        <MainButton text="No agent yet?" className="mt-10"/>
                         <p className="mt-4 text-xs text-gray-400">
                             We&apos;ll connect you with one of our trusted partners.
                         </p>
