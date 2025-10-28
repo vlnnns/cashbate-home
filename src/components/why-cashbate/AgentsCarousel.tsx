@@ -18,26 +18,25 @@ interface Agent {
     image: string; // шлях з /public
 }
 
-// --- СТРІЛКА ВЛІВО (ОНОВЛЕНО) ---
+// --- СТРІЛКА ВЛІВО (без змін) ---
 const PrevArrow = () => (
     <button
-        // Додано клас "prev-arrow" для Swiper
         className="prev-arrow w-10 h-10 rounded-full flex items-center justify-center cursor-pointer text-neutral-800 bg-neutral-200 transition hover:bg-neutral-300"
         aria-label="Previous slide"
     >
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <svg width="24" height="24" viewBox="0 0 24" fill="none">
             <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
     </button>
 );
 
-// --- СТРІЛКА ВПРАВО (ОНОВЛЕНО) ---
+// --- СТРІЛКА ВПРАВО (без змін) ---
 const NextArrow = () => (
     <button
         className="next-arrow w-10 h-10 rounded-full flex items-center justify-center cursor-pointer text-neutral-800 bg-neutral-200 transition hover:bg-neutral-300"
         aria-label="Next slide"
     >
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <svg width="24" height="24" viewBox="0 0 24" fill="none">
             <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
     </button>
@@ -55,10 +54,11 @@ const AgentsCarousel = () => {
 
     return (
         <>
-            <div className="w-full py-16 sm:py-24 overflow-hidden">
+            {/* !!! ЗМІНЕНО: 'py-16' -> 'pt-16 pb-12' (щоб зменшити нижній відступ) */}
+            <div className="w-full pt-16 pb-12 sm:pt-24 sm:pb-16 overflow-hidden">
                 <div className="max-w-5xl mx-auto px-4">
 
-                    {/* НОВИЙ ЗАГОЛОВОК */}
+                    {/* НОВИЙ ЗАГОЛОВОК (без змін) */}
                     <div className="text-center mb-12">
                         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-neutral-700 tracking-normal leading-tight">
                             Top Local Agents,
@@ -77,13 +77,22 @@ const AgentsCarousel = () => {
                             }}
                             loop={true}
                             spaceBetween={24}
-                            slidesPerView={1.2}
+
+                            // !!! ЗМІНЕНО: 'slidesPerView: 1.2' -> '1' (щоб сховати наступний слайд)
+                            slidesPerView={1}
+
+                            // !!! ДОДАНО: 'centeredSlides: true' (щоб відцентрувати слайд на моб.)
+                            centeredSlides={true}
+
+                            // !!! ЗМІНЕНО: Додано 'centeredSlides: false' для breakpoint'ів
                             breakpoints={{
                                 640: {
                                     slidesPerView: 2.2,
+                                    centeredSlides: false // 👈 Вимикаємо центрування
                                 },
                                 1024: {
                                     slidesPerView: 3,
+                                    centeredSlides: false // 👈 Вимикаємо центрування
                                 },
                             }}
                             className="pb-8" // Додаємо відступ знизу для тіні
@@ -115,7 +124,6 @@ const AgentsCarousel = () => {
                                             <p className="text-xs text-gray-500 italic">
                                                 &quot;{agent.experience}&quot;
                                             </p>
-                                            {/* ^^^ ВИПРАВЛЕНО: Було </D> */}
                                         </div>
                                     </div>
                                 </SwiperSlide>
@@ -123,7 +131,7 @@ const AgentsCarousel = () => {
                         </Swiper>
                     </div>
 
-                    {/* НИЖНІЙ БЛОК: КНОПКИ ТА CTA */}
+                    {/* НИЖНІЙ БЛОК: КНОПКИ ТА CTA (без змін) */}
                     <div className="flex flex-col items-center mt-12">
                         {/* Кнопки прокрутки */}
                         <div className="flex items-center gap-x-4">
@@ -132,7 +140,6 @@ const AgentsCarousel = () => {
                         </div>
 
                         {/* Кнопка CTA */}
-
                         <MainButton text="No agent yet?" className="mt-10"/>
                         <p className="mt-4 text-xs text-gray-400">
                             We&apos;ll connect you with one of our trusted partners.
