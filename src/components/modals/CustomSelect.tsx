@@ -55,8 +55,8 @@ export default function CustomSelect({ value, onChange, options, label, id }: Cu
                                 leaveFrom="opacity-100"
                                 leaveTo="opacity-0"
                             >
-                                {/* !!! ЗМІНЕНО: 'ring-1 ring-black ring-opacity-5' замінено на 'border border-neutral-200' !!! */}
-                                <Listbox.Options className="absolute z-10 mt-1 max-h-24 w-full overflow-auto rounded-xl bg-white py-1 text-base shadow-lg border border-neutral-200 focus:outline-none sm:text-sm">
+                                {/* !!! ЗМІНЕНО: max-h-24 -> max-h-60 !!! */}
+                                <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-xl bg-white py-1 text-base shadow-lg border border-neutral-200 focus:outline-none sm:text-sm">
                                     {options.map((option) => (
                                         <Listbox.Option
                                             key={option}

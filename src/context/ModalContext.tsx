@@ -1,10 +1,17 @@
 // context/ModalContext.tsx
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+// !!! НОВЕ: Імпортуємо useEffect та useState
+import React, {
+    createContext,
+    useContext,
+    useState,
+    ReactNode,
+    useEffect, // 👈 !!! НОВЕ
+} from 'react';
 import MultiStepFormModal from '@/components/modals/MultiStepFormModal';
 
-// !!! ЗМІНЕНО: Інтерфейс оновлено
+// ... (інтерфейс FormData залишається без змін)
 export interface FormData {
     address: string;
     bedrooms: string;
@@ -14,30 +21,50 @@ export interface FormData {
     condition: string;
     agent: string;
     timeline: string;
-    concern: string; // 👈 Було 'concerns: string[]'
+    concern: string;
     firstName: string;
     lastName: string;
     email: string;
     phone: string;
 }
 
-// !!! ЗМІНЕНО: Початкові дані оновлено для 'CustomSelect'
+// ... (initialFormData залишається без змін)
 const initialFormData: FormData = {
     address: '',
-    bedrooms: '1', // 👈 '1' - це валідна опція
-    bathrooms: '1', // 👈 '1' - це валідна опція
+    bedrooms: '1',
+    bathrooms: '1',
     squareFootage: '',
     yearBuilt: '',
-    condition: 'Select condition...', // 👈 Плейсхолдер
-    agent: '', // 👈 Для радіокнопок 'agent' має бути порожнім
-    timeline: 'Select timeline...', // 👈 Плейсхолдер
-    concern: 'Select concern...', // 👈 Плейсхолдер
+    condition: 'Select condition...',
+    agent: '',
+    timeline: 'Select timeline...',
+    concern: 'Select concern...',
     firstName: '',
     lastName: '',
     email: '',
     phone: '',
 };
 
+// !!! НОВЕ: Ключ для localStorage
+const LOCAL_STORAGE_KEY = 'multiStepFormData';
+
+// !!! НОВЕ: Функція для безпечного отримання початкових даних
+const getInitialData = (): FormData => {
+    // Перевіряємо, чи ми на клієнті (в браузері)
+    if (typeof window === 'undefined') {
+        return initialFormData;
+    }
+    try {
+        const savedData = localStorage.getItem(LOCAL_STORAGE_KEY);
+        // Якщо дані є, парсимо їх, інакше повертаємо початкові
+        return savedData ? JSON.parse(savedData) : initialFormData;
+    } catch (error) {
+        console.error('Failed to parse form data from localStorage', error);
+        return initialFormData; // Повертаємо початкові у разі помилки
+    }
+};
+
+// ... (інтерфейс ModalContextType залишається без змін)
 interface ModalContextType {
     isModalOpen: boolean;
     openModal: () => void;
@@ -56,13 +83,34 @@ const ModalContext = createContext<ModalContextType | undefined>(undefined);
 export const ModalProvider = ({ children }: { children: ReactNode }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentStep, setCurrentStep] = useState(1);
-    const [formData, setFormData] = useState<FormData>(initialFormData);
+
+    // !!! НОВЕ: Використовуємо функцію-ініціалізатор для useState
+    const [formData, setFormData] = useState<FormData>(getInitialData);
+
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    // !!! НОВЕ: useEffect для збереження даних у localStorage
+    // Цей ефект спрацьовує кожного разу, коли `formData` змінюється
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(formData));
+        }
+    }, [formData]); // Залежність - formData
 
     const openModal = () => setIsModalOpen(true);
 
     const closeModal = () => {
         setIsModalOpen(false);
+
+        // !!! НОВЕ: Логіка очищення форми
+        // Якщо ми закриваємо модалку *після* успішної відправки (крок 4)
+        // то очищуємо форму. В іншому випадку - дані залишаються.
+        if (currentStep === 4) {
+            setFormData(initialFormData);
+            // useEffect вище автоматично оновить localStorage
+            // на initialFormData
+        }
+
         setCurrentStep(1);
         setIsSubmitting(false);
     };
@@ -72,6 +120,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
             ...prev,
             [field]: value,
         }));
+        // Нам не потрібно тут зберігати, useEffect зробить це
     };
 
     const nextStep = () => setCurrentStep((prev) => (prev < 4 ? prev + 1 : prev));
@@ -90,7 +139,10 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
             });
 
             if (response.ok) {
-                nextStep();
+                nextStep(); // Переходимо на крок 4 (Успіх)
+                // !!! НОВЕ: Ми *не* очищуємо форму тут.
+                // Ми очистимо її, коли користувач закриє
+                // повідомлення про успіх (в `closeModal`).
             } else {
                 alert('An error occurred. Please try again.');
             }
