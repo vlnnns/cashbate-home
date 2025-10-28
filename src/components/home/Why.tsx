@@ -53,7 +53,8 @@ const WhyCashbate: React.FC = () => {
                             </div>
                         </div>
 
-                        <div className="relative h-full w-full overflow-hidden rounded-xl min-h-[300px] md:min-h-full">
+
+                        <div className="relative h-full w-full overflow-hidden rounded-xl min-h-[300px] md:min-h-full hidden md:block">
                             <img
                                 src="/whyCashbate.png"
                                 alt="Счастливая семья празднует"
@@ -69,4 +70,3 @@ const WhyCashbate: React.FC = () => {
 };
 
 export default WhyCashbate;
-
