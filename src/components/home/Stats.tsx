@@ -10,7 +10,7 @@ export default function Example() {
         <div className="relative isolate overflow-hidden text-white py-24 sm:py-32">
             <img
                 alt=""
-                src="/stats-bg.png"
+                src="/stats-bg.jpg"
                 className="absolute inset-0 -z-10 size-full object-cover opacity-100"
             />
             <div className="relative mx-auto max-w-7xl px-4 ">

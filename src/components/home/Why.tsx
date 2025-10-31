@@ -56,7 +56,7 @@ const WhyCashbate: React.FC = () => {
 
                         <div className="relative h-full w-full overflow-hidden rounded-xl min-h-[300px] md:min-h-full hidden md:block">
                             <img
-                                src="/whyCashbate.png"
+                                src="/whyCashbate.jpg"
                                 alt="Счастливая семья празднует"
                                 className="w-full h-full object-cover object-center"
                             />
