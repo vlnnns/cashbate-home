@@ -1,4 +1,3 @@
-// components/modals/CustomSelect.tsx
 "use client";
 
 import { Fragment } from 'react';
@@ -27,6 +26,11 @@ interface CustomSelectProps {
 }
 
 export default function CustomSelect({ value, onChange, options, label, id }: CustomSelectProps) {
+
+    // 1. Визначаємо, чи є поточне значення "плейсхолдером"
+    // Ми припускаємо, що будь-яка опція, яка починається з "Select", є плейсхолдером
+    const isPlaceholder = value.startsWith('Select');
+
     return (
         <div>
             <Listbox value={value} onChange={onChange}>
@@ -36,19 +40,23 @@ export default function CustomSelect({ value, onChange, options, label, id }: Cu
                             {label}
                         </Listbox.Label>
                         <div className="relative mt-1">
-                            {/* 1. Кнопка (виглядає як інпут) - без змін
-                                Тут 'truncate' залишається, це коректно для кнопки */}
+                            {/* 2. Кнопка (виглядає як інпут) */}
                             <Listbox.Button
                                 id={id}
                                 className="relative w-full cursor-default rounded-lg border border-neutral-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 sm:text-sm"
                             >
-                                <span className="block truncate">{value}</span>
+                                {/* 3. !!! ЗМІНЕНО: Додано умовний клас для 'placeholder' !!! */}
+                                <span className={`block truncate ${
+                                    isPlaceholder ? 'text-neutral-400' : 'text-neutral-900' // 👈 Светло-серый, если плейсхолдер
+                                }`}>
+                                    {value}
+                                </span>
                                 <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                                     <ChevronUpDownIcon />
                                 </span>
                             </Listbox.Button>
 
-                            {/* 2. Анімований список опцій */}
+                            {/* 4. Анімований список опцій */}
                             <Transition
                                 show={open}
                                 as={Fragment}
@@ -56,7 +64,6 @@ export default function CustomSelect({ value, onChange, options, label, id }: Cu
                                 leaveFrom="opacity-100"
                                 leaveTo="opacity-0"
                             >
-                                {/* !!! ЗМІНЕНО: 'text-base sm:text-sm' -> 'text-sm' (для меншого тексту) */}
                                 <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-xl bg-white py-1 text-sm shadow-lg border border-neutral-200 focus:outline-none">
                                     {options.map((option) => (
                                         <Listbox.Option
@@ -70,8 +77,10 @@ export default function CustomSelect({ value, onChange, options, label, id }: Cu
                                         >
                                             {({ selected }) => (
                                                 <>
-                                                    {/* !!! ЗМІНЕНО: 'truncate' видалено (для переносу тексту) */}
-                                                    <span className={`block ${selected ? 'font-semibold' : 'font-normal'}`}>
+                                                    {/* 5. !!! ЗМІНЕНО: Додано умовний колір для опції-плейсхолдера В СПИСКУ !!! */}
+                                                    <span className={`block ${selected ? 'font-semibold' : 'font-normal'} ${
+                                                        option.startsWith('Select') ? 'text-neutral-400' : 'text-neutral-900' // 👈 Светло-серый в списке
+                                                    }`}>
                                                         {option}
                                                     </span>
                                                     {selected ? (

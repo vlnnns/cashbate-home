@@ -9,16 +9,16 @@ import clsx from 'clsx'; // 👈 Імпортуємо clsx
 
 const baseStyles = {
     solid:
-        'group inline-flex items-center justify-center rounded-full py-3 px-4 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 transition-colors', // 👈 Оновлені відступи, розмір шрифту та transition
+        'group inline-flex items-center justify-center rounded-full py-2 px-4 text-sm font-medium focus-visible:outline-2 focus-visible:outline-offset-2 transition-colors',
     outline:
-        'group inline-flex ring-1 items-center justify-center rounded-full py-3 px-4 text-sm font-semibold transition-colors', // 👈 Оновлені відступи, розмір шрифту та transition
+        'group inline-flex ring-1 items-center justify-center rounded-full py-2 px-4 text-sm font-medium transition-colors',
 };
 
 const variantStyles = {
     solid: {
         slate:
             'bg-slate-900 text-white hover:bg-slate-700 hover:text-slate-100 active:bg-slate-800 active:text-slate-300 focus-visible:outline-slate-900',
-        blue: 'bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 active:text-blue-100 focus-visible:outline-blue-600', // 👈 Оновлений hover:bg-blue-700
+        blue: 'bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 active:text-blue-100 focus-visible:outline-blue-600',
         white:
             'bg-white text-slate-900 hover:bg-blue-50 active:bg-blue-200 active:text-slate-600 focus-visible:outline-white',
     },

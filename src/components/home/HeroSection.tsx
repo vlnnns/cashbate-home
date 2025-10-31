@@ -4,25 +4,23 @@ import Image from "next/image";
 import { useState, FormEvent } from "react";
 import HeroAddressForm from '@/components/ui/HeroAddressForm';
 
-/**
- * HeroSection — edge-to-edge background image with overlay, centered content, and responsive address form.
- */
+
 export default function HeroSection({
                                         bgSrc = "/home-bg.png",
                                         bgAlt = "Modern living room background",
                                         title = "Sell Your Home Faster —",
                                         highlight = "No Sale, No Pay.",
                                         subtitle = "CASHBATE is an incentive solution that shares risk with you by covering cosmetic upgrades to help your home sell quicker and for more. It's not a credit, not a loan.",
-                                        // 1. 'ctaLabel' видалено, оскільки він не використовується
+
                                     }: {
     bgSrc?: string;
     bgAlt?: string;
     title?: string;
     highlight?: string;
     subtitle?: string;
-    ctaLabel?: string; // (Залишаємо тут для типу, але не в деструктуризації)
+    ctaLabel?: string;
 }) {
-    // Цей код не використовується, але не заважає
+
     const [address, setAddress] = useState("");
     function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -52,7 +50,7 @@ export default function HeroSection({
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
 
                 <div className="max-w-3xl pb-12 sm:pb-20">
-                    <h1 className="text-4xl sm:text-6xl font-semibold leading-tight tracking-tight text-gray-900">
+                    <h1 className="text-4xl sm:text-6xl font-semibold leading-tight tracking-normal text-gray-900">
                         {title}
                         <br />
                         <span className="relative inline-block text-blue-600">{highlight}
@@ -67,7 +65,7 @@ export default function HeroSection({
                         </span>
                     </h1>
 
-                    <p className=" mt-6 max-w-2xl text-lg tracking-tight text-slate-700">
+                    <p className=" mt-6 max-w-2xl text-lg tracking-normal text-slate-700">
                         {subtitle}
                     </p>
                 </div>

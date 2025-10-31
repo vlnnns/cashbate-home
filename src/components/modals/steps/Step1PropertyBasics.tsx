@@ -185,10 +185,10 @@ export default function Step1PropertyBasics() {
                     />
                 </div>
 
-                {/* Обгортка для розміщення в один ряд */}
-                <div className="grid grid-cols-2 gap-x-4">
+                {/* !!! ИЗМЕНЕНО: 'grid grid-cols-2' заменен на 'flex items-end' для выравнивания по нижнему краю */}
+                <div className="flex items-end gap-x-4">
                     {/* Square Footage */}
-                    <div>
+                    <div className="flex-1"> {/* flex-1, чтобы занять 50% */}
                         <label htmlFor="squareFootage" className="block text-sm font-semibold text-neutral-700 mb-1">
                             Square Footage (Optional)
                         </label>
@@ -204,7 +204,7 @@ export default function Step1PropertyBasics() {
                     </div>
 
                     {/* Year Built */}
-                    <div>
+                    <div className="flex-1"> {/* flex-1, чтобы занять 50% */}
                         <label htmlFor="yearBuilt" className="block text-sm font-semibold text-neutral-700 mb-1">
                             Year Built (Optional)
                         </label>
@@ -223,3 +223,4 @@ export default function Step1PropertyBasics() {
         </div>
     );
 }
+

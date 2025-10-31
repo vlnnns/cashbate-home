@@ -16,8 +16,8 @@ const navigation = [
 
 // 2. Основной компонент Navbar (Серверный)
 export default function Navbar() {
-    const LOGO_WIDTH = 145
-    const LOGO_HEIGHT = 60
+    const LOGO_WIDTH = 135
+    const LOGO_HEIGHT = 40
 
     return (
         <header className="relative z-50">
@@ -52,7 +52,7 @@ export default function Navbar() {
                     </div>
 
                     {/* 3. Клиентские компоненты, гидрирующиеся "на месте" */}
-                    <div className="flex items-center gap-x-5">
+                    <div className="flex items-center gap-x-2">
                         {/* div-обертка рендерится на сервере, резервируя место */}
                         <div className="hidden lg:block">
                             <MainButton text="Get Started Risk Free >>" />

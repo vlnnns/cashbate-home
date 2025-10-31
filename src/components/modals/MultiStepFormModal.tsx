@@ -1,4 +1,3 @@
-// components/modals/MultiStepFormModal.tsx
 "use client";
 
 import { Dialog, Transition } from '@headlessui/react';
@@ -92,12 +91,12 @@ export default function MultiStepFormModal() {
                             leaveFrom="opacity-100 scale-100"
                             leaveTo="opacity-0 scale-95"
                         >
-                            {/* sm:max-h-[90vh] залишається, але оскільки
-                              внутрішній div контенту більше не має overflow,
-                              це вікно буде прокручуватися цілком (в <div className="fixed inset-0 overflow-y-auto">)
-                              якщо контент не влізе.
+                            {/* !!! ЗМІНЕНО: h-screen -> min-h-screen.
+                              Це дозволяє панелі бути *мінімум* висотою екрану,
+                              але рости, якщо контенту більше.
+                              sm:min-h-0 скидає це для десктопу.
                             */}
-                            <Dialog.Panel className="relative w-full max-w-none sm:max-w-2xl transform rounded-none sm:rounded-2xl bg-white p-6 sm:p-8 text-left align-middle shadow-xl transition-all flex flex-col h-screen sm:h-auto sm:max-h-[90vh]">
+                            <Dialog.Panel className="relative w-full max-w-none sm:max-w-2xl transform rounded-none sm:rounded-2xl bg-white p-6 sm:p-8 text-left align-middle shadow-xl transition-all flex flex-col min-h-screen sm:min-h-0 sm:h-auto sm:max-h-[90vh]">
 
                                 <button
                                     type="button"
@@ -129,14 +128,13 @@ export default function MultiStepFormModal() {
                                 </div>
 
                                 {/* !!! ЗМІНЕНО: 2. Блок Контенту
-                                  Видалено 'overflow-y-auto'.
-                                  Тепер блок буде розширюватися, а прокручуватись буде все вікно.
-                                  Це дозволить випадаючим спискам не обрізатись.
+                                  flex-1 змушує його заповнити простір і притиснути футер вниз.
+                                  pb-24 (великий відступ для fixed-футера) змінено на pb-6.
                                 */}
                                 <div className={`
                                     mt-4
                                     ${!isConfirmationStep
-                                    ? 'flex-1 pr-2 sm:pr-4 pb-24 sm:pb-4' // 👈 'overflow-y-auto' видалено
+                                    ? 'flex-1 pr-2 sm:pr-4 pb-6 sm:pb-4' // 👈 'overflow-y-auto' видалено, pb-24 -> pb-6
                                     : ''}
                                 `}>
                                     {steps[currentStep - 1]}
@@ -145,16 +143,19 @@ export default function MultiStepFormModal() {
                                 {/* 3. Блок Футера (Кнопки) */}
                                 <div>
                                     {!isConfirmationStep && (
-                                        /* !!! ЗМІНЕНО: Адаптація футера для десктопу
-                                          sm:mt-10 -> sm:mt-6 (зменшуємо висоту нижнього блоку)
+                                        /* !!! ЗМІНЕНО: Футер більше не 'fixed'.
+                                          Видалено 'fixed bottom-0 left-0'.
+                                          Тепер це звичайний блок, який знаходиться в кінці flex-контейнера.
+                                          Він все ще має білий фон і рамку на мобільному,
+                                          і стає прозорим на десктопі.
                                         */
-                                        <div className="fixed bottom-0 left-0 w-full bg-white p-4 border-t border-neutral-200
-                                                        sm:relative sm:mt-6 sm:p-0 sm:border-t-0 sm:bg-transparent
+                                        <div className="w-full bg-white p-4 border-t border-neutral-200
+                                                        sm:mt-6 sm:p-0 sm:border-t-0 sm:bg-transparent
                                                         flex items-center justify-between">
                                             <button
                                                 type="button"
                                                 onClick={prevStep}
-                                                className={`rounded-full py-3 px-10 text-sm font-semibold text-neutral-700 bg-neutral-100 hover:bg-neutral-200
+                                                className={`rounded-full py-2 px-4 text-sm font-semibold text-neutral-700 bg-neutral-100 hover:bg-neutral-200
                                                             ${currentStep === 1 ? 'invisible' : 'visible'}`}
                                             >
                                                 Back
@@ -163,7 +164,7 @@ export default function MultiStepFormModal() {
                                                 type={currentStep === 3 ? 'submit' : 'button'}
                                                 onClick={currentStep === 3 ? handleSubmit : nextStep}
                                                 disabled={isSubmitting}
-                                                className="inline-flex justify-center rounded-full border border-transparent bg-blue-600 py-3 px-10 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+                                                className="inline-flex justify-center rounded-full border border-transparent bg-blue-600 py-2 px-4 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
                                             >
                                                 {isSubmitting
                                                     ? 'Submitting...'
