@@ -1,142 +1,167 @@
-// src/app/api/submit-form.ts
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { FormData } from '@/context/ModalContext';
+import type { NextApiRequest, NextApiResponse } from "next";
+import { promises as fs } from "fs";
+import path from "path";
+import nodemailer from "nodemailer";
 
-// Імпортуємо модулі Node.js для роботи з файлами
-import { promises as fs } from 'fs';
-import path from 'path';
+interface FormData {
+    address?: string;
+    bedrooms?: string;
+    bathrooms?: string;
+    squareFootage?: string;
+    yearBuilt?: string;
+    condition?: string;
+    agent?: string;
+    timeline?: string;
+    concern?: string;
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    phone?: string;
+}
 
-// --- (Функція sendConfirmationEmail залишається без змін) ---
-const sendConfirmationEmail = async (data: FormData) => {
-    const { firstName, email } = data;
-    const subject = "Your CASHBATE Pre-Qualification is in Progress";
-    const body = `
-        Hi ${firstName || 'there'},
-        
-        We’ve received your information and our team is already reviewing your home.
-        A CASHBATE specialist will reach out soon to schedule your Pre-Qualification Visit.
-        
-        If you don’t have an agent, we’ll connect you with one of our trusted partners to guide the process. Together, we’ll confirm your eligibility and outline which upgrades may be included in your CASHBATE package.
-        
-        What happens next:
-        - A CASHBATE specialist will contact you within 24 hours.
-        - We’ll schedule your Pre-Qualification Visit (virtual or in-person).
-        - You’ll get a clear plan of the upgrades your home may qualify for — with no upfront cost to you.
-        
-        Remember: CASHBATE covers cosmetic upgrades up to the base package value, with payment settled at closing. If additional work is needed beyond this, those costs would need to be covered by the seller at the time of work.
-        
-        Thank you for trusting CASHBATE to help your home sell faster and for more.
-        — The CASHBATE Team
-    `;
-
-    console.log("--- SENDING EMAIL ---");
-    console.log(`To: ${email}`);
-    console.log(`Subject: ${subject}`);
-    console.log(body);
-    console.log("---------------------");
-
-    return new Promise(resolve => setTimeout(resolve, 1000));
+const toCsvValue = (v: string | undefined | null): string => {
+    if (!v) return "";
+    const s = String(v);
+    return s.includes(",") || s.includes('"') || s.includes("\n")
+        ? `"${s.replace(/"/g, '""')}"`
+        : s;
 };
 
-
-// !!! НОВЕ: Допоміжна функція для CSV-екранування
-/**
- * Екранує значення для CSV, якщо воно містить коми, лапки або переноси рядків.
- */
-const toCsvValue = (value: string | undefined | null): string => {
-    if (value === null || value === undefined) {
-        return ''; // Порожнє значення
-    }
-    const str = String(value);
-
-    // Якщо поле містить "небезпечні" символи, беремо його в лапки
-    if (str.includes(',') || str.includes('"') || str.includes('\n')) {
-        // Всередині поля подвійні лапки замінюються на подвійні подвійні лапки
-        const escaped = str.replace(/"/g, '""');
-        return `"${escaped}"`;
-    }
-
-    return str; // Повертаємо як є
-};
-
-
-// !!! ОНОВЛЕНО: Функція для збереження даних у .csv файл
-/**
- * Зберігає дані форми у .csv файл у корені проекту.
- */
 const saveToCsvFile = async (data: FormData) => {
-    // Визначаємо шлях до файлу
-    const filePath = path.join(process.cwd(), 'submissions.csv');
-
+    const file = path.join(process.cwd(), "submissions.csv");
     const timestamp = new Date().toISOString();
-
-    // 1. Визначаємо заголовки (всі поля з FormData + час)
     const headers = [
-        'timestamp', 'address', 'bedrooms', 'bathrooms', 'squareFootage',
-        'yearBuilt', 'condition', 'agent', 'timeline', 'concern',
-        'firstName', 'lastName', 'email', 'phone'
+        "timestamp",
+        "address",
+        "bedrooms",
+        "bathrooms",
+        "squareFootage",
+        "yearBuilt",
+        "condition",
+        "agent",
+        "timeline",
+        "concern",
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
     ];
-    const headerRow = headers.join(',') + '\n';
-
-    // 2. Готуємо рядок з даними, використовуючи CSV-екранування
+    const headerRow = headers.join(",") + "\n";
     const values = [
-        timestamp, data.address, data.bedrooms, data.bathrooms, data.squareFootage,
-        data.yearBuilt, data.condition, data.agent, data.timeline, data.concern,
-        data.firstName, data.lastName, data.email, data.phone
+        timestamp,
+        data.address,
+        data.bedrooms,
+        data.bathrooms,
+        data.squareFootage,
+        data.yearBuilt,
+        data.condition,
+        data.agent,
+        data.timeline,
+        data.concern,
+        data.firstName,
+        data.lastName,
+        data.email,
+        data.phone,
     ];
-    const dataRow = values.map(toCsvValue).join(',') + '\n';
+    const dataRow = values.map(toCsvValue).join(",") + "\n";
 
     try {
-        let fileExists = false;
+        let exists = true;
         try {
-            // Перевіряємо, чи існує файл
-            await fs.stat(filePath);
-            fileExists = true;
-        } catch (e) {
-            fileExists = false;
+            await fs.stat(file);
+        } catch {
+            exists = false;
         }
-
-        let contentToAppend = '';
-        if (!fileExists) {
-            // Якщо файлу немає, спочатку додаємо заголовки
-            contentToAppend += headerRow;
-        }
-        // Додаємо рядок з даними
-        contentToAppend += dataRow;
-
-        await fs.appendFile(filePath, contentToAppend, 'utf8');
-        console.log(`Form data successfully saved to ${filePath}`);
-
-    } catch (fileError) {
-        console.error('Failed to write to CSV file:', fileError);
+        const content = !exists ? headerRow + dataRow : dataRow;
+        await fs.appendFile(file, content, "utf8");
+    } catch (err) {
+        console.error("CSV write error:", err);
     }
 };
 
+const validate = (data: FormData) => {
+    const errors: Record<string, string> = {};
+    if (!data.firstName) errors.firstName = "First name required";
+    if (!data.email) errors.email = "Email required";
+    if (!data.phone) errors.phone = "Phone required";
+    if (!data.address) errors.address = "Address required";
+    return errors;
+};
+
+const sendEmails = async (data: FormData) => {
+    const transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST,
+        port: Number(process.env.SMTP_PORT || 587),
+        secure: false,
+        auth: {
+            user: process.env.SMTP_USER,
+            pass: process.env.SMTP_PASS,
+        },
+    });
+
+    const adminMail = {
+        from: process.env.EMAIL_FROM,
+        to: process.env.EMAIL_TO,
+        subject: "New CASHBATE Submission",
+        text: `
+New submission from ${data.firstName} ${data.lastName}
+
+Email: ${data.email}
+Phone: ${data.phone}
+Address: ${data.address}
+Bedrooms: ${data.bedrooms}
+Bathrooms: ${data.bathrooms}
+Condition: ${data.condition}
+Agent: ${data.agent}
+Timeline: ${data.timeline}
+Concern: ${data.concern}
+    `,
+    };
+
+    const userMail = {
+        from: process.env.EMAIL_FROM,
+        to: data.email,
+        subject: "Your CASHBATE Pre-Qualification is in Progress",
+        text: `
+Hi ${data.firstName || "there"},
+
+We’ve received your information and our team is already reviewing your home.
+
+Next steps:
+- A CASHBATE specialist will contact you soon.
+- We'll schedule your Pre-Qualification Visit.
+- You'll get a detailed list of covered upgrades.
+
+— The CASHBATE Team
+    `,
+    };
+
+    await transporter.sendMail(adminMail);
+    if (data.email) await transporter.sendMail(userMail);
+};
 
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-    if (req.method === 'POST') {
-        try {
-            const formData: FormData = req.body;
-            console.log("Received form data:", formData);
+    if (req.method !== "POST") {
+        res.setHeader("Allow", ["POST"]);
+        return res.status(405).json({ message: "Method not allowed" });
+    }
 
-            // --- 1. Відправляємо Email ---
-            await sendConfirmationEmail(formData);
-
-            // --- 2. Зберігаємо у CSV-файл (ОНОВЛЕНО) ---
-            await saveToCsvFile(formData);
-
-            // Відправляємо успішну відповідь клієнту
-            res.status(200).json({ message: 'Form submitted successfully' });
-
-        } catch (error) {
-            console.error('API Error:', error);
-            res.status(500).json({ message: 'Internal Server Error' });
+    try {
+        const data: FormData = req.body;
+        const errors = validate(data);
+        if (Object.keys(errors).length) {
+            return res.status(400).json({ message: "Validation failed", errors });
         }
-    } else {
-        res.setHeader('Allow', ['POST']);
-        res.status(405).end(`Method ${req.method} Not Allowed`);
+
+        await saveToCsvFile(data);
+        await sendEmails(data);
+
+        return res.status(200).json({ message: "Form submitted successfully" });
+    } catch (err) {
+        console.error("API error:", err);
+        return res.status(500).json({ message: "Internal Server Error" });
     }
 }

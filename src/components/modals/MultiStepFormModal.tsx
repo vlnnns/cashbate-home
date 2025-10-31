@@ -1,22 +1,31 @@
 "use client";
 
-import { Dialog, Transition } from '@headlessui/react';
-import { Fragment, useEffect } from 'react';
-import { useModal } from '@/context/ModalContext';
-import Step1PropertyBasics from './steps/Step1PropertyBasics';
-import Step2SellingPlans from './steps/Step2SellingPlans';
-import Step3ContactInfo from './steps/Step3ContactInfo';
-import Step4Confirmation from './steps/Step4Confirmation';
+import { Dialog, Transition } from "@headlessui/react";
+import { Fragment, useEffect } from "react";
+import { useModal } from "@/context/ModalContext";
+import Step1PropertyBasics from "./steps/Step1PropertyBasics";
+import Step2SellingPlans from "./steps/Step2SellingPlans";
+import Step3ContactInfo from "./steps/Step3ContactInfo";
+import Step4Confirmation from "./steps/Step4Confirmation";
 
 const CloseIcon = () => (
-    // ... (код іконки без змін)
-    <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+    <svg
+        className="h-6 w-6"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+    >
+        <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M6 18L18 6M6 6l12 12"
+        />
     </svg>
 );
 
 export default function MultiStepFormModal() {
-
     const {
         isModalOpen,
         closeModal: contextCloseModal,
@@ -27,43 +36,44 @@ export default function MultiStepFormModal() {
         handleSubmit,
     } = useModal();
 
-    // ... (код closeModal та useEffect без змін)
     const closeModal = () => {
-        if (window.history.state && window.history.state.modal === 'open') {
+        if (window.history.state?.modal === "open") {
             window.history.back();
         } else {
             contextCloseModal();
         }
-    }
+    };
 
     useEffect(() => {
-        const handlePopState = (event: PopStateEvent) => {
-            if (isModalOpen) {
-                contextCloseModal();
-            }
+        const handlePop = () => {
+            if (isModalOpen) contextCloseModal();
         };
-
         if (isModalOpen) {
-            window.history.pushState({ modal: 'open' }, '', window.location.pathname);
-            window.addEventListener('popstate', handlePopState);
+            window.history.pushState({ modal: "open" }, "", window.location.pathname);
+            window.addEventListener("popstate", handlePop);
         }
-
-        return () => {
-            window.removeEventListener('popstate', handlePopState);
-        };
+        return () => window.removeEventListener("popstate", handlePop);
     }, [isModalOpen, contextCloseModal]);
 
-
     const steps = [
-        <Step1PropertyBasics key={1} />,
-        <Step2SellingPlans key={2} />,
-        <Step3ContactInfo key={3} />,
-        <Step4Confirmation key={4} />,
+        Step1PropertyBasics,
+        Step2SellingPlans,
+        Step3ContactInfo,
+        Step4Confirmation,
     ];
-
-    const isConfirmationStep = currentStep === 4;
+    const StepComponent = steps[currentStep - 1];
+    const isConfirmation = currentStep === 4;
     const totalSteps = 3;
-    const progressPercent = Math.min((currentStep / totalSteps) * 100, 100);
+    const progress = Math.min(
+        (Math.min(currentStep, totalSteps) / totalSteps) * 100,
+        100
+    );
+
+    const onSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (currentStep === 3) await handleSubmit();
+        else nextStep();
+    };
 
     return (
         <Transition appear show={isModalOpen} as={Fragment}>
@@ -91,13 +101,7 @@ export default function MultiStepFormModal() {
                             leaveFrom="opacity-100 scale-100"
                             leaveTo="opacity-0 scale-95"
                         >
-                            {/* !!! ЗМІНЕНО: h-screen -> min-h-screen.
-                              Це дозволяє панелі бути *мінімум* висотою екрану,
-                              але рости, якщо контенту більше.
-                              sm:min-h-0 скидає це для десктопу.
-                            */}
                             <Dialog.Panel className="relative w-full max-w-none sm:max-w-2xl transform rounded-none sm:rounded-2xl bg-white p-6 sm:p-8 text-left align-middle shadow-xl transition-all flex flex-col min-h-screen sm:min-h-0 sm:h-auto sm:max-h-[90vh]">
-
                                 <button
                                     type="button"
                                     onClick={closeModal}
@@ -107,74 +111,54 @@ export default function MultiStepFormModal() {
                                     <CloseIcon />
                                 </button>
 
-                                {/* 1. Блок Хедера (Progress Bar + Step) - без змін */}
-                                <div>
-                                    {!isConfirmationStep && (
+                                <form onSubmit={onSubmit} className="flex flex-col flex-1">
+                                    {!isConfirmation && (
                                         <div className="mb-4 mr-8">
                                             <div className="w-full h-2 bg-neutral-200 rounded-full overflow-hidden">
                                                 <div
                                                     className="h-full bg-blue-600 rounded-full transition-all duration-300 ease-out"
-                                                    style={{ width: `${progressPercent}%` }}
+                                                    style={{ width: `${progress}%` }}
                                                 />
                                             </div>
+                                            <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500">
+                        STEP {currentStep} / {totalSteps}
+                      </span>
                                         </div>
                                     )}
 
-                                    {!isConfirmationStep && (
-                                        <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500">
-                                            STEP {currentStep} / {totalSteps}
-                                        </span>
-                                    )}
-                                </div>
+                                    <div
+                                        className={`mt-4 flex-1 pr-2 sm:pr-4 pb-6 sm:pb-4 ${
+                                            !isConfirmation ? "overflow-y-auto" : ""
+                                        }`}
+                                    >
+                                        <StepComponent />
+                                    </div>
 
-                                {/* !!! ЗМІНЕНО: 2. Блок Контенту
-                                  flex-1 змушує його заповнити простір і притиснути футер вниз.
-                                  pb-24 (великий відступ для fixed-футера) змінено на pb-6.
-                                */}
-                                <div className={`
-                                    mt-4
-                                    ${!isConfirmationStep
-                                    ? 'flex-1 pr-2 sm:pr-4 pb-6 sm:pb-4' // 👈 'overflow-y-auto' видалено, pb-24 -> pb-6
-                                    : ''}
-                                `}>
-                                    {steps[currentStep - 1]}
-                                </div>
-
-                                {/* 3. Блок Футера (Кнопки) */}
-                                <div>
-                                    {!isConfirmationStep && (
-                                        /* !!! ЗМІНЕНО: Футер більше не 'fixed'.
-                                          Видалено 'fixed bottom-0 left-0'.
-                                          Тепер це звичайний блок, який знаходиться в кінці flex-контейнера.
-                                          Він все ще має білий фон і рамку на мобільному,
-                                          і стає прозорим на десктопі.
-                                        */
-                                        <div className="w-full bg-white p-4 border-t border-neutral-200
-                                                        sm:mt-6 sm:p-0 sm:border-t-0 sm:bg-transparent
-                                                        flex items-center justify-between">
+                                    {!isConfirmation && (
+                                        <div className="w-full bg-white p-4 border-t border-neutral-200 sm:mt-6 sm:p-0 sm:border-t-0 sm:bg-transparent flex items-center justify-between">
                                             <button
                                                 type="button"
                                                 onClick={prevStep}
-                                                className={`rounded-full py-2 px-4 text-sm font-semibold text-neutral-700 bg-neutral-100 hover:bg-neutral-200
-                                                            ${currentStep === 1 ? 'invisible' : 'visible'}`}
+                                                className={`rounded-full py-2 px-4 text-sm font-semibold text-neutral-700 bg-neutral-100 hover:bg-neutral-200 ${
+                                                    currentStep === 1 ? "invisible" : "visible"
+                                                }`}
                                             >
                                                 Back
                                             </button>
                                             <button
-                                                type={currentStep === 3 ? 'submit' : 'button'}
-                                                onClick={currentStep === 3 ? handleSubmit : nextStep}
+                                                type="submit"
                                                 disabled={isSubmitting}
                                                 className="inline-flex justify-center rounded-full border border-transparent bg-blue-600 py-2 px-4 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
                                             >
                                                 {isSubmitting
-                                                    ? 'Submitting...'
+                                                    ? "Submitting..."
                                                     : currentStep === 3
-                                                        ? 'Submit'
-                                                        : 'Continue'}
+                                                        ? "Submit"
+                                                        : "Continue"}
                                             </button>
                                         </div>
                                     )}
-                                </div>
+                                </form>
                             </Dialog.Panel>
                         </Transition.Child>
                     </div>

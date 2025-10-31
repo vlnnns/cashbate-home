@@ -1,17 +1,15 @@
-// context/ModalContext.tsx
 "use client";
 
-// !!! НОВЕ: Імпортуємо useEffect та useState
 import React, {
     createContext,
     useContext,
     useState,
     ReactNode,
-    useEffect, // 👈 !!! НОВЕ
-} from 'react';
-import MultiStepFormModal from '@/components/modals/MultiStepFormModal';
+    useEffect,
+} from "react";
+import MultiStepFormModal from "@/components/modals/MultiStepFormModal";
 
-// ... (інтерфейс FormData залишається без змін)
+// --------- TYPES ----------
 export interface FormData {
     address: string;
     bedrooms: string;
@@ -28,56 +26,42 @@ export interface FormData {
     phone: string;
 }
 
-// ... (initialFormData залишається без змін)
 const initialFormData: FormData = {
-    address: '',
-    bedrooms: '1',
-    bathrooms: '1',
-    squareFootage: '',
-    yearBuilt: '',
-    condition: 'Select condition...',
-    agent: 'Select an option...',
-    timeline: 'Select timeline...',
-    concern: 'Select concern...',
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
+    address: "",
+    bedrooms: "1",
+    bathrooms: "1",
+    squareFootage: "",
+    yearBuilt: "",
+    condition: "Select condition...",
+    agent: "Select an option...",
+    timeline: "Select timeline...",
+    concern: "Select concern...",
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
 };
 
-// !!! НОВЕ: Ключ для localStorage
-const LOCAL_STORAGE_KEY = 'multiStepFormData';
+const LOCAL_STORAGE_KEY = "multiStepFormData";
 
-// !!! НОВЕ: Функція для безпечного отримання початкових даних
+// --- Load initial data safely ---
 const getInitialData = (): FormData => {
-    // 1. Повертаємо початкові дані, якщо це сервер
-    if (typeof window === 'undefined') {
-        return initialFormData;
-    }
+    if (typeof window === "undefined") return initialFormData;
 
     try {
-        // 2. Намагаємось отримати збережені дані
-        const savedData = localStorage.getItem(LOCAL_STORAGE_KEY);
+        const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
+        const data: FormData = saved ? JSON.parse(saved) : initialFormData;
 
-        // !!! ОСЬ ТУТ ЗМІНА: 'let' -> 'const'
-        const data: FormData = savedData ? JSON.parse(savedData) : initialFormData;
-
-        // 3. !!! ГОЛОВНИЙ ФІКС (залишається без змін) !!!
-        // Перевіряємо, чи не збереглося у користувача старе значення (старі радіокнопки)
-        if (data.agent === '' || data.agent === 'yes' || data.agent === 'no') {
-            // Встановлюємо значення з наших нових initialFormData
+        if (data.agent === "" || data.agent === "yes" || data.agent === "no") {
             data.agent = initialFormData.agent;
         }
 
-        // 4. Повертаємо або оновлені, або початкові дані
         return data;
-
-    } catch (error) {
-        console.error('Failed to parse form data from localStorage', error);
-        return initialFormData; // Повертаємо початкові у разі помилки
+    } catch {
+        return initialFormData;
     }
 };
-// ... (інтерфейс ModalContextType залишається без змін)
+
 interface ModalContextType {
     isModalOpen: boolean;
     openModal: () => void;
@@ -88,7 +72,7 @@ interface ModalContextType {
     updateField: (field: keyof FormData, value: string | string[]) => void;
     nextStep: () => void;
     prevStep: () => void;
-    handleSubmit: (e: React.FormEvent) => Promise<void>;
+    handleSubmit: () => Promise<void>;
 }
 
 const ModalContext = createContext<ModalContextType | undefined>(undefined);
@@ -96,32 +80,23 @@ const ModalContext = createContext<ModalContextType | undefined>(undefined);
 export const ModalProvider = ({ children }: { children: ReactNode }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentStep, setCurrentStep] = useState(1);
-
-    // !!! НОВЕ: Використовуємо функцію-ініціалізатор для useState
     const [formData, setFormData] = useState<FormData>(getInitialData);
-
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // !!! НОВЕ: useEffect для збереження даних у localStorage
-    // Цей ефект спрацьовує кожного разу, коли `formData` змінюється
+    // persist data
     useEffect(() => {
-        if (typeof window !== 'undefined') {
+        if (typeof window !== "undefined") {
             localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(formData));
         }
-    }, [formData]); // Залежність - formData
+    }, [formData]);
 
     const openModal = () => setIsModalOpen(true);
 
     const closeModal = () => {
         setIsModalOpen(false);
 
-        // !!! НОВЕ: Логіка очищення форми
-        // Якщо ми закриваємо модалку *після* успішної відправки (крок 4)
-        // то очищуємо форму. В іншому випадку - дані залишаються.
         if (currentStep === 4) {
             setFormData(initialFormData);
-            // useEffect вище автоматично оновить localStorage
-            // на initialFormData
         }
 
         setCurrentStep(1);
@@ -129,45 +104,40 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
     };
 
     const updateField = (field: keyof FormData, value: string | string[]) => {
-        setFormData((prev) => ({
-            ...prev,
-            [field]: value,
-        }));
-        // Нам не потрібно тут зберігати, useEffect зробить це
+        setFormData((prev) => ({ ...prev, [field]: value }));
     };
 
-    const nextStep = () => setCurrentStep((prev) => (prev < 4 ? prev + 1 : prev));
-    const prevStep = () => setCurrentStep((prev) => (prev > 1 ? prev - 1 : prev));
+    const nextStep = () =>
+        setCurrentStep((prev) => (prev < 4 ? prev + 1 : prev));
+    const prevStep = () =>
+        setCurrentStep((prev) => (prev > 1 ? prev - 1 : prev));
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const handleSubmit = async () => {
         if (currentStep !== 3) return;
 
         setIsSubmitting(true);
         try {
-            const response = await fetch('/api/submit-form', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+            const response = await fetch("/api/submit-form", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData),
             });
 
             if (response.ok) {
-                nextStep(); // Переходимо на крок 4 (Успіх)
-                // !!! НОВЕ: Ми *не* очищуємо форму тут.
-                // Ми очистимо її, коли користувач закриє
-                // повідомлення про успіх (в `closeModal`).
+                nextStep(); // go to confirmation
             } else {
-                alert('An error occurred. Please try again.');
+                const err = await response.json();
+                alert(err.message || "An error occurred. Please try again.");
             }
         } catch (error) {
-            console.error('Submission error:', error);
-            alert('An error occurred. Please try again.');
+            console.error("Submission error:", error);
+            alert("An error occurred. Please try again.");
         } finally {
             setIsSubmitting(false);
         }
     };
 
-    const value = {
+    const value: ModalContextType = {
         isModalOpen,
         openModal,
         closeModal,
@@ -189,9 +159,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 };
 
 export const useModal = () => {
-    const context = useContext(ModalContext);
-    if (context === undefined) {
-        throw new Error('useModal must be used within a ModalProvider');
-    }
-    return context;
+    const ctx = useContext(ModalContext);
+    if (!ctx) throw new Error("useModal must be used within ModalProvider");
+    return ctx;
 };
