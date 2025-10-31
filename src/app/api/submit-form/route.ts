@@ -158,19 +158,21 @@ export async function POST(req: Request) {
         // 3. Get the body by calling req.json()
         const data: FormData = await req.json();
 
-        const errors = validate(data);
-        if (Object.keys(errors).length) {
-            // 4. Return responses using NextResponse.json()
-            return NextResponse.json(
-                { message: "Validation failed", errors },
-                { status: 400 }
-            );
-        }
-
+        console.log("API: Данные валидны. Начинаю запись в CSV...");
         await saveToCsvFile(data);
-        await sendEmails(data);
+        console.log("API: Запись в CSV завершена.");
 
-        // 5. Return success response
+        // НЕ ЖДЕМ (убираем await)
+        // Просто запускаем отправку email в фоновом режиме
+        sendEmails(data).catch(err => {
+            // Обязательно добавьте .catch, чтобы отловить
+            // ошибку, если email не отправится.
+            console.error("Ошибка фоновой отправки email:", err);
+        });
+
+        console.log("API: Отправляю ответ 200 (email отправляется в фоне).");
+
+        // Сразу отвечаем пользователю, что все хорошо
         return NextResponse.json(
             { message: "Form submitted successfully" },
             { status: 200 }
