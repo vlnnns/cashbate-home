@@ -46,7 +46,7 @@ export default function ReadyToStartSection() {
                         onClick={openModal}
                         className="inline-flex items-center justify-center
                        bg-white text-gray-800 font-semibold
-                       px-4 py-3 text-xs m:text-base sm:px-8 sm:py-3.5 rounded-full
+                       py-2 px-4 text-sm rounded-full
                        shadow-lg hover:scale-105 transition-transform
                        focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2"
                     >
