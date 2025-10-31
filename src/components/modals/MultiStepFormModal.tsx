@@ -1,7 +1,7 @@
 "use client";
 
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useState, useCallback } from "react";
 import { useModal } from "@/context/ModalContext";
 import Step1PropertyBasics from "./steps/Step1PropertyBasics";
 import Step2SellingPlans from "./steps/Step2SellingPlans";
@@ -34,7 +34,20 @@ export default function MultiStepFormModal() {
         nextStep,
         prevStep,
         handleSubmit,
+        formData,
     } = useModal();
+
+    const [sessionId, setSessionId] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (isModalOpen && !sessionId) {
+            const id =
+                (typeof crypto !== "undefined" && crypto.randomUUID
+                    ? crypto.randomUUID()
+                    : Math.random().toString(36).slice(2)) + "-" + Date.now();
+            setSessionId(id);
+        }
+    }, [isModalOpen, sessionId]);
 
     const closeModal = () => {
         if (window.history.state?.modal === "open") {
@@ -69,15 +82,46 @@ export default function MultiStepFormModal() {
         100
     );
 
+    const savePartial = useCallback(
+        async (step: number) => {
+            if (!sessionId) return;
+            try {
+                await fetch("/api/save-partial", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        ...formData,
+                        step,
+                        sessionId,
+                    }),
+                });
+            } catch (err) {
+                console.warn("partial save failed", err);
+            }
+        },
+        [formData, sessionId]
+    );
+
     const onSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (currentStep === 3) await handleSubmit();
-        else nextStep();
+
+        if (currentStep < 3) {
+            await savePartial(currentStep);
+            nextStep();
+            return;
+        }
+
+        if (currentStep === 3) {
+            await savePartial(currentStep);
+            await handleSubmit();
+            return;
+        }
     };
 
     return (
         <Transition appear show={isModalOpen} as={Fragment}>
             <Dialog as="div" className="relative z-50" onClose={closeModal}>
+                {/* Overlay */}
                 <Transition.Child
                     as={Fragment}
                     enter="ease-out duration-300"
@@ -90,8 +134,8 @@ export default function MultiStepFormModal() {
                     <div className="fixed inset-0 bg-black/60 backdrop-blur-lg" />
                 </Transition.Child>
 
-                <div className="fixed inset-0 overflow-y-auto">
-                    <div className="flex min-h-full items-start sm:items-center justify-center p-0 sm:p-4 text-center">
+                <div className="fixed inset-0">
+                    <div className="flex h-[100dvh] items-start sm:items-center justify-center p-0 sm:p-4 text-center">
                         <Transition.Child
                             as={Fragment}
                             enter="ease-out duration-300"
@@ -101,7 +145,9 @@ export default function MultiStepFormModal() {
                             leaveFrom="opacity-100 scale-100"
                             leaveTo="opacity-0 scale-95"
                         >
-                            <Dialog.Panel className="relative w-full max-w-none sm:max-w-2xl transform rounded-none sm:rounded-2xl bg-white p-6 sm:p-8 text-left align-middle shadow-xl transition-all flex flex-col min-h-screen sm:min-h-0 sm:h-auto sm:max-h-[90vh]">
+                            {/* ВАЖНО: даём скролл ПАНЕЛИ, а не внутренним блокам */}
+                            <Dialog.Panel className="relative w-full max-w-none sm:max-w-2xl transform rounded-none sm:rounded-2xl bg-white p-6 sm:p-8 text-left align-middle shadow-xl transition-all flex flex-col h-full sm:h-auto sm:max-h-[90vh] overflow-y-auto">
+                                {/* Close */}
                                 <button
                                     type="button"
                                     onClick={closeModal}
@@ -111,9 +157,10 @@ export default function MultiStepFormModal() {
                                     <CloseIcon />
                                 </button>
 
-                                <form onSubmit={onSubmit} className="flex flex-col flex-1">
+                                {/* ФОРМА — БЕЗ жесткого flex-1 */}
+                                <form onSubmit={onSubmit} className="flex flex-col gap-6">
                                     {!isConfirmation && (
-                                        <div className="mb-4 mr-8">
+                                        <div className="mr-8">
                                             <div className="w-full h-2 bg-neutral-200 rounded-full overflow-hidden">
                                                 <div
                                                     className="h-full bg-blue-600 rounded-full transition-all duration-300 ease-out"
@@ -126,16 +173,14 @@ export default function MultiStepFormModal() {
                                         </div>
                                     )}
 
-                                    <div
-                                        className={`mt-4 flex-1 pr-2 sm:pr-4 pb-6 sm:pb-4 ${
-                                            !isConfirmation ? "overflow-y-auto" : ""
-                                        }`}
-                                    >
+                                    {/* Контент шага — просто блок, без scroll внутри */}
+                                    <div className="mt-2">
                                         <StepComponent />
                                     </div>
 
+                                    {/* Футер теперь в потоке, под контентом */}
                                     {!isConfirmation && (
-                                        <div className="w-full bg-white p-4 border-t border-neutral-200 sm:mt-6 sm:p-0 sm:border-t-0 sm:bg-transparent flex items-center justify-between">
+                                        <div className="w-full flex items-center justify-between gap-4 pt-2">
                                             <button
                                                 type="button"
                                                 onClick={prevStep}
