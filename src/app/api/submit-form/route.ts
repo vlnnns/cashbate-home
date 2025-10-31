@@ -1,4 +1,9 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+// Important: Remove imports for NextApiRequest and NextApiResponse
+// import type { NextApiRequest, NextApiResponse } from "next";
+
+// Add this import for NextResponse
+import { NextResponse } from "next/server";
+
 import { promises as fs } from "fs";
 import path from "path";
 import nodemailer from "nodemailer";
@@ -140,28 +145,44 @@ Next steps:
     if (data.email) await transporter.sendMail(userMail);
 };
 
-export default async function handler(
-    req: NextApiRequest,
-    res: NextApiResponse
-) {
-    if (req.method !== "POST") {
-        res.setHeader("Allow", ["POST"]);
-        return res.status(405).json({ message: "Method not allowed" });
-    }
+// --- START OF CHANGES ---
+
+// 1. Change the function signature to export async function POST
+//    The 'req' parameter is now a standard Request object.
+export async function POST(req: Request) {
+
+    // 2. Remove the method check; this function *only* handles POST
+    // if (req.method !== "POST") { ... }
 
     try {
-        const data: FormData = req.body;
+        // 3. Get the body by calling req.json()
+        const data: FormData = await req.json();
+
         const errors = validate(data);
         if (Object.keys(errors).length) {
-            return res.status(400).json({ message: "Validation failed", errors });
+            // 4. Return responses using NextResponse.json()
+            return NextResponse.json(
+                { message: "Validation failed", errors },
+                { status: 400 }
+            );
         }
 
         await saveToCsvFile(data);
         await sendEmails(data);
 
-        return res.status(200).json({ message: "Form submitted successfully" });
+        // 5. Return success response
+        return NextResponse.json(
+            { message: "Form submitted successfully" },
+            { status: 200 }
+        );
+
     } catch (err) {
         console.error("API error:", err);
-        return res.status(500).json({ message: "Internal Server Error" });
+        // 6. Return error response
+        return NextResponse.json(
+            { message: "Internal Server Error" },
+            { status: 500 }
+        );
     }
 }
+// --- END OF CHANGES ---
