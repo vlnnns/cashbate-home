@@ -67,7 +67,7 @@ export default function HeroSection({
                         </span>
                     </h1>
 
-                    <p className="mt-6 text-base sm:text-xl leading-relaxed text-gray-700">
+                    <p className=" mt-6 max-w-2xl text-lg tracking-tight text-slate-700">
                         {subtitle}
                     </p>
                 </div>

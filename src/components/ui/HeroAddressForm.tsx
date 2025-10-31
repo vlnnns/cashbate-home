@@ -47,7 +47,7 @@ export default function HeroAddressForm({ ctaLabel }: HeroAddressFormProps) {
                 />
                 <button
                     type="submit"
-                    className="inline-flex items-center justify-center whitespace-nowrap rounded-full h-12 px-6 sm:px-8 font-medium text-sm sm:text-base bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 transition-colors duration-200 shadow-md"
+                    className="inline-flex items-center justify-center whitespace-nowrap rounded-full h-12 py-3 px-4 text-sm font-semibold bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 transition-colors duration-200 shadow-md"
                 >
                     {ctaLabel}
                 </button>

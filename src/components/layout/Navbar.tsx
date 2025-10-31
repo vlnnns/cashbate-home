@@ -42,7 +42,7 @@ export default function Navbar() {
                             <Link
                                 key={item.name}
                                 href={item.href}
-                                className="text-sm font-semibold text-gray-900 hover:text-blue-500"
+                                className="text-sm font-light text-gray-700 hover:text-blue-500"
                                 prefetch={false}
                             >
                                 {item.name}
@@ -60,7 +60,7 @@ export default function Navbar() {
 
                     {/* Мобилка */}
                     <div className="flex items-center gap-x-2 lg:hidden">
-                        <MainButton text="Get Started" className="py-2 px-4 text-sm" />
+                        <MainButton text="Get Started" />
                         <button
                             type="button"
                             onClick={() => setMobileMenuOpen(true)}

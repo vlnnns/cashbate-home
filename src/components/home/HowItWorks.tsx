@@ -161,10 +161,10 @@ const HowItWorksSection = () => {
                 </div>
 
                 {/* Call to Action Button */}
-                <div className="mt-16 text-center">
+                <div className="sm:mt-16 text-center">
                     <Link
                         href="/how-it-works"
-                        className="inline-flex items-center bg-white text-neutral-700 font-semibold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+                        className="inline-flex items-center bg-white text-neutral-700 font-semibold py-3 px-4 text-sm rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
                     >
                         See Full Process
                         <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

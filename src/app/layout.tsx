@@ -2,18 +2,24 @@
 
 // !!! ЗМІНА: Імпортуємо 'Viewport'
 import type { Metadata, Viewport } from "next";
-import { Poppins } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { ModalProvider } from "@/context/ModalContext";
+import { Inter, Lexend } from 'next/font/google'
+import clsx from 'clsx'
 
-const poppins = Poppins({
-    subsets: ["latin"],
-    weight: ["400", "500", "600", "700", "800"],
-    variable: "--font-poppins",
-});
+const inter = Inter({
+    subsets: ['latin'],
+    display: 'swap',
+    variable: '--font-inter',
+})
 
+const lexend = Lexend({
+    subsets: ['latin'],
+    display: 'swap',
+    variable: '--font-lexend',
+})
 // !!! ЗМІНА: 'viewport' видалено звідси
 export const metadata: Metadata = {
     title: "CASHBATE",
@@ -32,7 +38,8 @@ export default function RootLayout({
                                    }: Readonly<{ children: React.ReactNode }>) {
     return (
         <html lang="en">
-        <body className={`${poppins.variable} font-sans tracking-tight`}>
+        <body className={clsx(`font-sans tracking-tight` , inter.variable,
+            lexend.variable)}>
         <div className="flex flex-col min-h-screen">
             <ModalProvider>
                 <Navbar />

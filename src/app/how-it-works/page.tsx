@@ -40,7 +40,7 @@ export default function HowItWorksPage() {
                             and for more — with no upfront cost.
                         </p>
 
-                        <div className="mt-4">
+                        <div className="mt-6">
                             <MainButton text="Start My Risk-Free Check" />
                         </div>
 

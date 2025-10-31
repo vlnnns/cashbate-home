@@ -104,7 +104,7 @@ export default function FaqsPage() {
     return (
         <div>
             <main>
-                <section className="relative py-24 sm:py-32 overflow-hidden">
+                <section className="relative py-24 sm:py-60 overflow-hidden">
 
                     <Image
                         src="/faq-bg.png"
@@ -120,7 +120,7 @@ export default function FaqsPage() {
                     {/* Контент секції (залишається без змін) */}
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10" >
                         <div className="max-w-xl">
-                            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-neutral-700 tracking-tight">
+                            <h1 className="text-4xl sm:text-7xl font-semibold text-neutral-700 tracking-tight">
                                 Frequently <br></br>Asked <br></br>Questions
                             </h1>
                         </div>
