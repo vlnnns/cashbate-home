@@ -1,10 +1,10 @@
 // БОЛЬШЕ НЕ 'use client'
 
-// Убираем импорты Popover, clsx, MainButton
 import Link from 'next/link'
 import Image from 'next/image'
-// 1. Импортируем новый клиентский компонент
-import { MobileMenu } from './MobileMenu'
+// 1. Импортируем клиентские компоненты
+import MainButton from '@/components/ui/MainButton'
+import { MobileNavigation } from './MobileMenu'
 
 // Ваши навигационные ссылки
 const navigation = [
@@ -14,11 +14,9 @@ const navigation = [
     { name: 'Why CASHBATE', href: '/why-cashbate' },
 ]
 
-// 2. Функции MobileNavLink, MobileNavIcon, MobileNavigation ПЕРЕНЕСЕНЫ в MobileMenu.tsx
-
-// 3. Основной компонент Navbar (теперь Серверный)
+// 2. Основной компонент Navbar (Серверный)
 export default function Navbar() {
-    const LOGO_WIDTH = 160
+    const LOGO_WIDTH = 150
     const LOGO_HEIGHT = 52
 
     return (
@@ -33,7 +31,9 @@ export default function Navbar() {
                             <Image
                                 src="/logos/logo.png"
                                 alt="CASHBATE logo"
-                                className="h-10 w-auto"
+                                // ИСПРАВЛЕНИЕ: 'w-auto' удален отсюда.
+                                // h-10 сохраняет высоту.
+                                className="h-11"
                                 width={LOGO_WIDTH}
                                 height={LOGO_HEIGHT}
                                 priority
@@ -53,10 +53,22 @@ export default function Navbar() {
                         </div>
                     </div>
 
-                    {/* 4. Вставляем Клиентский компонент,
-                        который "гидрируется" на этом месте */}
+                    {/* 3. Клиентские компоненты, гидрирующиеся "на месте" */}
                     <div className="flex items-center gap-x-5">
-                        <MobileMenu navigation={navigation} />
+                        {/* div-обертка рендерится на сервере, резервируя место */}
+                        <div className="hidden lg:block">
+                            <MainButton text="Get Started Risk Free >>" />
+                        </div>
+
+                        {/* div-обертка рендерится на сервере */}
+                        <div className="lg:hidden">
+                            <MainButton text="Get Started" />
+                        </div>
+
+                        {/* div-обертка рендерится на сервере */}
+                        <div className="-mr-1 lg:hidden">
+                            <MobileNavigation navigation={navigation} />
+                        </div>
                     </div>
                 </nav>
             </div>

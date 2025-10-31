@@ -17,7 +17,7 @@ type NavItem = {
     href: string
 }
 
-// 3. Все мобильные компоненты теперь здесь
+// 3. Компоненты для мобильного меню
 function MobileNavLink({
                            href,
                            children,
@@ -40,10 +40,9 @@ function MobileNavIcon({ open }: { open: boolean }) {
     return (
         <svg
             aria-hidden="true"
-            // ИЗМЕНЕНИЕ: Крестик (open) теперь будет 'stroke-gray-900' (черный)
             className={clsx(
                 'h-3.5 w-3.5 overflow-visible',
-                open ? 'stroke-gray-900' : 'stroke-gray-700',
+                open ? 'stroke-gray-900' : 'stroke-gray-700', // Обычный черный крестик
             )}
             fill="none"
             strokeWidth={2}
@@ -57,8 +56,7 @@ function MobileNavIcon({ open }: { open: boolean }) {
                 )}
             />
             <path
-                // ИЗМЕНЕНИЕ: Исправлена SVG-path для крестика (было M12 2L12)
-                d="M2 2L12 12M12 2L2 12"
+                d="M2 2L12 12M12 2L2 12" // Исправленный path для крестика
                 className={clsx(
                     'origin-center transition',
                     !open && 'scale-90 opacity-0',
@@ -68,7 +66,8 @@ function MobileNavIcon({ open }: { open: boolean }) {
     )
 }
 
-function MobileNavigation({ navigation }: { navigation: NavItem[] }) {
+// 4. ИСПРАВЛЕНИЕ: Добавляем 'export', чтобы Navbar.tsx мог импортировать этот компонент
+export function MobileNavigation({ navigation }: { navigation: NavItem[] }) {
     return (
         <Popover>
             <PopoverButton
@@ -78,13 +77,12 @@ function MobileNavigation({ navigation }: { navigation: NavItem[] }) {
                 {({ open }) => <MobileNavIcon open={open} />}
             </PopoverButton>
 
-            {/* Анимации теперь будут срабатывать ТОЛЬКО при клике, а не при загрузке */}
             <PopoverBackdrop
-                transition // 👈 Возвращаем 'transition'
+                transition
                 className="fixed inset-0 bg-black/30 duration-150 data-closed:opacity-0 data-enter:ease-out data-leave:ease-in"
             />
             <PopoverPanel
-                transition // 👈 Возвращаем 'transition'
+                transition
                 className="absolute inset-x-0 top-full mt-4 flex origin-top flex-col rounded-2xl bg-white p-4 text-lg tracking-tight text-slate-900 shadow-xl ring-1 ring-slate-900/5 data-closed:scale-95 data-closed:opacity-0 data-enter:duration-150 data-enter:ease-out data-leave:duration-100 data-leave:ease-in"
             >
                 {navigation.map((item) => (
@@ -96,28 +94,6 @@ function MobileNavigation({ navigation }: { navigation: NavItem[] }) {
                 <MainButton text="Get Started Risk Free >>" />
             </PopoverPanel>
         </Popover>
-    )
-}
-
-// 4. Экспортируем главный компонент MobileMenu
-export function MobileMenu({ navigation }: { navigation: NavItem[] }) {
-    return (
-        <>
-            {/* Кнопка "Get Started" (десктоп) */}
-            <div className="hidden lg:block">
-                <MainButton text="Get Started Risk Free >>" />
-            </div>
-
-            {/* Кнопка "Get Started" (мобильная) */}
-            <div className="lg:hidden">
-                <MainButton text="Get Started" />
-            </div>
-
-            {/* Иконка мобильного меню (только на мобильных) */}
-            <div className="-mr-1 lg:hidden">
-                <MobileNavigation navigation={navigation} />
-            </div>
-        </>
     )
 }
 
