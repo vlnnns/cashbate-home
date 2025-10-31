@@ -1,8 +1,8 @@
 'use client'
 import React, { useRef, useState, useEffect } from 'react';
 import Link from 'next/link'; // 1. Link вже імпортовано
+import backgroundImage from '/background-features.jpg'
 
-// ... (код StepItem залишається без змін) ...
 interface Step {
     title: string;
     description: string;
@@ -119,7 +119,7 @@ const HowItWorksSection = () => {
 
     return (
         <section className=" py-20 lg:py-32 antialiased" style={{
-            backgroundImage: `url('/blue-bg.png')`,
+            backgroundImage: `url('/background-features.jpg')`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundAttachment: 'fixed',
