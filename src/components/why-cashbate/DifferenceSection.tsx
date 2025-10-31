@@ -12,31 +12,31 @@ const differenceData = [
         title: "No Credit. No Loan.",
         description:
             "CASHBATE is not financing. You never take on debt or monthly payments. Our contribution is only repaid if your home sells.",
-        icon: "/puzzles/1.png",
+        icon: "/puzzles/11.png",
     },
     {
         title: "Risk-Sharing, Not Contracting.",
         description:
             "We share the risk with you. If your home doesn’t sell within 6 months at market price, you owe $0 for our contribution.",
-        icon: "/puzzles/2.png",
+        icon: "/puzzles/21.png",
     },
     {
         title: "Licensed Contractors, Not DIY.",
         description:
             "All updates are completed by vetted, licensed, and insured contractors. CASHBATE provides structure, not labor.",
-        icon: "/puzzles/3.png",
+        icon: "/puzzles/32.png",
     },
     {
         title: "Focused on ROI.",
         description:
             "We only recommend cosmetic updates that increase your home’s appeal and value — maximizing results at minimum cost.",
-        icon: "/puzzles/4.png",
+        icon: "/puzzles/44.png",
     },
     {
         title: "Free CMA Report",
         description:
             "If you don’t already have an agent, CASHBATE connects you with a partner who provides a free CMA report for your area.",
-        icon: "/puzzles/5.png",
+        icon: "/puzzles/55.png",
     },
 ];
 
