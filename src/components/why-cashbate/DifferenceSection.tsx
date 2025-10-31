@@ -73,7 +73,6 @@ const ChevronRightIcon = () => (
 );
 
 export default function DifferenceSection() {
-    // 1) флаг, что мы уже на клиенте
     const [mounted, setMounted] = useState(false);
     const [isSmallMobile, setIsSmallMobile] = useState(false);
     const [isInView, setIsInView] = useState(false);
@@ -82,14 +81,13 @@ export default function DifferenceSection() {
     const sectionRef = useRef<HTMLDivElement | null>(null);
     const titleRef = useRef<HTMLDivElement | null>(null);
 
-    // 2) включаем всё живое только на клиенте
     useEffect(() => {
         setMounted(true);
 
         const handleResize = () => {
-            setIsSmallMobile(window.innerWidth < 430);
+            const width = window.innerWidth;
+            setIsSmallMobile(width < 430);
 
-            // считаем offset только на клиенте
             if (titleRef.current) {
                 const left = titleRef.current.getBoundingClientRect().left;
                 setSlidesOffset(left);
@@ -99,7 +97,7 @@ export default function DifferenceSection() {
         handleResize();
         window.addEventListener("resize", handleResize);
 
-        // observer
+        // observer для анимации
         const observer = new IntersectionObserver(
             ([entry]) => {
                 if (entry.isIntersecting) {
@@ -120,7 +118,7 @@ export default function DifferenceSection() {
 
     return (
         <section ref={sectionRef} className="py-20 sm:py-28 overflow-hidden">
-            {/* header */}
+            {/* Header */}
             <div ref={titleRef} className="max-w-7xl mx-auto px-4">
                 <div className="text-left mb-12">
                     <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-neutral-700 tracking-tight leading-tight">
@@ -131,9 +129,9 @@ export default function DifferenceSection() {
                 </div>
             </div>
 
-            {/* 3) пока не mounted — рендерим простой список без Swiper, чтобы SSR == CSR */}
+            {/* Пока не смонтировался — рисуем сеткой (чтобы не было hydration error) */}
             {!mounted ? (
-                <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 gap-4">
                     {differenceData.map((item, index) => (
                         <div
                             key={index}
@@ -142,14 +140,14 @@ export default function DifferenceSection() {
                             <Image
                                 src={item.icon}
                                 alt={item.title}
-                                width={80}
-                                height={80}
-                                className="w-16 h-16 object-contain mb-5"
+                                width={120}
+                                height={120}
+                                className="w-24 h-24 object-contain mb-5"
                             />
                             <h3 className="text-lg font-semibold text-gray-900 mb-2">
                                 {item.title}
                             </h3>
-                            <p className="text-gray-600 text-[13px] leading-snug max-w-[240px] mx-auto">
+                            <p className="text-gray-600 text-[13px] leading-snug max-w-[260px] mx-auto">
                                 {item.description}
                             </p>
                         </div>
@@ -163,15 +161,23 @@ export default function DifferenceSection() {
                             nextEl: ".next-arrow-diff",
                             prevEl: ".prev-arrow-diff",
                         }}
-                        loop={true}
-                        speed={400}
-                        spaceBetween={0}
-                        slidesPerView={1.1}
+                        loop={!isSmallMobile} // отключаем loop на мобилке
+                        speed={450}
+                        slidesPerView={1.05}
+                        spaceBetween={16}
                         slidesOffsetBefore={slidesOffset}
                         slidesOffsetAfter={slidesOffset}
                         breakpoints={{
-                            640: { slidesPerView: 2.3 },
-                            1024: { slidesPerView: 4 },
+                            640: {
+                                slidesPerView: 2,
+                                slidesOffsetBefore: 24,
+                                slidesOffsetAfter: 24,
+                            },
+                            1024: {
+                                slidesPerView: 4,
+                                slidesOffsetBefore: 0,
+                                slidesOffsetAfter: 0,
+                            },
                         }}
                         className="pb-8"
                     >
@@ -179,24 +185,24 @@ export default function DifferenceSection() {
                             const shouldBounce =
                                 isInView && isSmallMobile && (index === 0 || index === 1);
 
+                            const mobileMarginLeft = isSmallMobile ? "ml-4" : "";
+
                             return (
                                 <SwiperSlide key={index}>
                                     <div
-                                        className={`bg-white mx-4 px-5 py-10 rounded-3xl flex flex-col items-center justify-between text-center min-h-[360px] h-full ${
-                                            shouldBounce ? "animate-bounce-hint" : ""
-                                        }`}
+                                        className={`bg-white sm:ml-4 px-4 py-8 rounded-3xl flex flex-col items-center justify-center text-center min-h-[360px] h-full ${shouldBounce ? "animate-bounce-hint" : ""} ${mobileMarginLeft}`}
                                     >
                                         <Image
                                             src={item.icon}
                                             alt={item.title}
-                                            width={80}
-                                            height={80}
-                                            className="w-16 h-16 sm:w-20 sm:h-20 object-contain mb-5"
+                                            width={130}
+                                            height={130}
+                                            className="w-28 h-28 object-contain mb-6"
                                         />
-                                        <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3">
+                                        <h3 className="text-xl font-semibold text-gray-900 mb-3">
                                             {item.title}
                                         </h3>
-                                        <p className="text-gray-600 text-[13px] leading-snug max-w-[260px] mx-auto">
+                                        <p className="text-gray-600 text-[13px] leading-snug max-w-[280px] mx-auto">
                                             {item.description}
                                         </p>
                                     </div>
@@ -204,10 +210,13 @@ export default function DifferenceSection() {
                             );
                         })}
                     </Swiper>
+
+
+
                 </div>
             )}
 
-            {/* стрелки — можно показывать всегда */}
+            {/* стрелки */}
             <div className="max-w-7xl mx-auto px-4">
                 <div className="mt-8 flex justify-start space-x-4">
                     <button
