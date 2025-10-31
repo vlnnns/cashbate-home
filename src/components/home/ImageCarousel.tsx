@@ -136,8 +136,7 @@ const ImageCarousel = () => {
                                         src={slide.image}
                                         alt={slide.alt}
                                         className="absolute inset-0 w-full h-full object-cover"
-                                        // Use 'eager' for the first image (priority) and 'lazy' for the rest
-                                        loading={index === 0 ? 'eager' : 'lazy'}
+                                        loading={'lazy'}
                                     />
                                 </div>
                             </div>
