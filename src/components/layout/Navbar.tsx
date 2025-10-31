@@ -29,7 +29,7 @@ export default function Navbar() {
                     <div className="flex items-center md:gap-x-12">
                         <Link href="/" className="-m-1.5 p-1.5" aria-label="CASHBATE">
                             <Image
-                                src="/logos/logo.png"
+                                src="/logos/logo.webp"
                                 alt="CASHBATE logo"
                                 // ИСПРАВЛЕНИЕ: 'w-auto' удален отсюда.
                                 // h-10 сохраняет высоту.
