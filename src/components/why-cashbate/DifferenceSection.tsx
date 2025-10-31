@@ -1,68 +1,161 @@
 "use client";
 
-import React from 'react';
-import Image from 'next/image';
-// --- Імпорт Swiper ---
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
+import React, { useState, useEffect, useRef } from "react";
+import Image from "next/image";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
 
-// Дані для карток (не змінено)
 const differenceData = [
     {
         title: "No Credit. No Loan.",
-        description: "CASHBATE is not financing. You never take on debt or monthly payments. Our contribution is only repaid if your home sells.",
+        description:
+            "CASHBATE is not financing. You never take on debt or monthly payments. Our contribution is only repaid if your home sells.",
+        icon: "/puzzles/1.png",
     },
     {
         title: "Risk-Sharing, Not Contracting.",
-        description: "We share the risk with you. If your home doesn’t sell within 6 months at market price, you owe $0 for our contribution.",
+        description:
+            "We share the risk with you. If your home doesn’t sell within 6 months at market price, you owe $0 for our contribution.",
+        icon: "/puzzles/2.png",
     },
     {
         title: "Licensed Contractors, Not DIY.",
-        description: "All updates are completed by vetted, licensed, and insured contractors. CASHBATE is not a contractor — we provide the incentive and structure, not the labor.",
+        description:
+            "All updates are completed by vetted, licensed, and insured contractors. CASHBATE provides structure, not labor.",
+        icon: "/puzzles/3.png",
     },
     {
         title: "Focused on ROI.",
-        description: "We only recommend cosmetic updates that increase your home’s appeal and market value — maximizing results at minimum cost.",
+        description:
+            "We only recommend cosmetic updates that increase your home’s appeal and value — maximizing results at minimum cost.",
+        icon: "/puzzles/4.png",
     },
     {
         title: "Free CMA Report",
-        description: "If you don’t already have a real estate agent, CASHBATE connects you with a trusted local partner who provides a free Comparative Market Analysis (CMA) report. This shows what similar homes in your neighborhood have sold for, so you know your true market value before listing.",
+        description:
+            "If you don’t already have an agent, CASHBATE connects you with a partner who provides a free CMA report for your area.",
+        icon: "/puzzles/5.png",
     },
 ];
 
-// --- СТРІЛКА ВЛІВО (без змін) ---
 const ChevronLeftIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+    >
         <polyline points="15 18 9 12 15 6"></polyline>
     </svg>
 );
 
-// --- СТРІЛКА ВПРАВО (без змін) ---
 const ChevronRightIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+    >
         <polyline points="9 18 15 12 9 6"></polyline>
     </svg>
 );
 
-
-// Основний компонент секції
 export default function DifferenceSection() {
+    // 1) флаг, что мы уже на клиенте
+    const [mounted, setMounted] = useState(false);
+    const [isSmallMobile, setIsSmallMobile] = useState(false);
+    const [isInView, setIsInView] = useState(false);
+    const [slidesOffset, setSlidesOffset] = useState(16);
+
+    const sectionRef = useRef<HTMLDivElement | null>(null);
+    const titleRef = useRef<HTMLDivElement | null>(null);
+
+    // 2) включаем всё живое только на клиенте
+    useEffect(() => {
+        setMounted(true);
+
+        const handleResize = () => {
+            setIsSmallMobile(window.innerWidth < 430);
+
+            // считаем offset только на клиенте
+            if (titleRef.current) {
+                const left = titleRef.current.getBoundingClientRect().left;
+                setSlidesOffset(left);
+            }
+        };
+
+        handleResize();
+        window.addEventListener("resize", handleResize);
+
+        // observer
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsInView(true);
+                    observer.disconnect();
+                }
+            },
+            { threshold: 0.2 }
+        );
+
+        if (sectionRef.current) observer.observe(sectionRef.current);
+
+        return () => {
+            window.removeEventListener("resize", handleResize);
+            observer.disconnect();
+        };
+    }, []);
 
     return (
-        <section className=" py-20 sm:py-28 max-w-7xl mx-auto">
-            <div className="px-4">
-                {/* Заголовок (без змін) */}
-                <div className="text-center sm:text-left mb-12">
-                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-neutral-700 tracking-tight">
+        <section ref={sectionRef} className="py-20 sm:py-28 overflow-hidden">
+            {/* header */}
+            <div ref={titleRef} className="max-w-7xl mx-auto px-4">
+                <div className="text-left mb-12">
+                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-neutral-700 tracking-tight leading-tight">
                         What Makes
                         <br />
                         CASHBATE <span className="text-blue-600">Different</span>
                     </h2>
                 </div>
+            </div>
 
-                {/* --- SWIPER (без змін) --- */}
+            {/* 3) пока не mounted — рендерим простой список без Swiper, чтобы SSR == CSR */}
+            {!mounted ? (
+                <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {differenceData.map((item, index) => (
+                        <div
+                            key={index}
+                            className="bg-white px-5 py-10 rounded-3xl flex flex-col items-center justify-center text-center min-h-[360px]"
+                        >
+                            <Image
+                                src={item.icon}
+                                alt={item.title}
+                                width={80}
+                                height={80}
+                                className="w-16 h-16 object-contain mb-5"
+                            />
+                            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                                {item.title}
+                            </h3>
+                            <p className="text-gray-600 text-[13px] leading-snug max-w-[240px] mx-auto">
+                                {item.description}
+                            </p>
+                        </div>
+                    ))}
+                </div>
+            ) : (
                 <div className="relative">
                     <Swiper
                         modules={[Navigation]}
@@ -71,62 +164,68 @@ export default function DifferenceSection() {
                             prevEl: ".prev-arrow-diff",
                         }}
                         loop={true}
-                        spaceBetween={16}
-                        slidesPerView={1.2}
+                        speed={400}
+                        spaceBetween={0}
+                        slidesPerView={1.1}
+                        slidesOffsetBefore={slidesOffset}
+                        slidesOffsetAfter={slidesOffset}
                         breakpoints={{
-                            640: {
-                                slidesPerView: 2.5,
-                            },
-                            1024: {
-                                slidesPerView: 4,
-                            },
+                            640: { slidesPerView: 2.3 },
+                            1024: { slidesPerView: 4 },
                         }}
                         className="pb-8"
                     >
-                        {differenceData.map((item, index) => (
-                            <SwiperSlide key={index}>
-                                <div
-                                    className="flex flex-col justify-between h-100 bg-white rounded-xl p-6 shadow-lg"
-                                >
-                                    {/* Верхня частина (Заголовок) */}
-                                    <div>
-                                        {/* !!! ЗМІНЕНО: 'min-h-20' -> 'min-h-16' (зменшено для економії) */}
-                                        <h3 className="text-2xl font-medium text-neutral-700 min-h-16">{item.title}</h3>
-                                    </div>
+                        {differenceData.map((item, index) => {
+                            const shouldBounce =
+                                isInView && isSmallMobile && (index === 0 || index === 1);
 
-                                    {/* Нижня частина (Іконка + Опис) */}
-                                    <div>
+                            return (
+                                <SwiperSlide key={index}>
+                                    <div
+                                        className={`bg-white mx-4 px-5 py-10 rounded-3xl flex flex-col items-center justify-between text-center min-h-[360px] h-full ${
+                                            shouldBounce ? "animate-bounce-hint" : ""
+                                        }`}
+                                    >
                                         <Image
-                                            src={`/puzzles/${index + 1}.png`}
-                                            alt=""
-                                            width={170} // Ваш розмір
-                                            height={170} // Ваш розмір
-                                            className="mb-3"
+                                            src={item.icon}
+                                            alt={item.title}
+                                            width={80}
+                                            height={80}
+                                            className="w-16 h-16 sm:w-20 sm:h-20 object-contain mb-5"
                                         />
-                                        <p className="text-xs text-gray-500 leading-tight tracking-tight">{item.description}</p>
+                                        <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3">
+                                            {item.title}
+                                        </h3>
+                                        <p className="text-gray-600 text-[13px] leading-snug max-w-[260px] mx-auto">
+                                            {item.description}
+                                        </p>
                                     </div>
-                                </div>
-                            </SwiperSlide>
-                        ))}
+                                </SwiperSlide>
+                            );
+                        })}
                     </Swiper>
                 </div>
+            )}
 
-                {/* Кнопки навігації (без змін) */}
-                <div className="mt-8 flex justify-center sm:justify-start space-x-4">
+            {/* стрелки — можно показывать всегда */}
+            <div className="max-w-7xl mx-auto px-4">
+                <div className="mt-8 flex justify-start space-x-4">
                     <button
                         aria-label="Scroll left"
-                        className="prev-arrow-diff h-10 w-10 flex items-center justify-center rounded-full bg-neutral-200 text-neutral-500  hover:bg-neutral-300 transition"
+                        className="prev-arrow-diff h-10 w-10 flex items-center justify-center rounded-full bg-neutral-200 text-neutral-500 hover:bg-neutral-300 transition"
                     >
                         <ChevronLeftIcon />
                     </button>
                     <button
                         aria-label="Scroll right"
-                        className="next-arrow-diff h-10 w-10 flex items-center justify-center rounded-full bg-neutral-200 text-neutral-500  hover:bg-neutral-300  transition"
+                        className="next-arrow-diff h-10 w-10 flex items-center justify-center rounded-full bg-neutral-200 text-neutral-500 hover:bg-neutral-300 transition"
                     >
                         <ChevronRightIcon />
                     </button>
                 </div>
             </div>
+
+
         </section>
     );
 }

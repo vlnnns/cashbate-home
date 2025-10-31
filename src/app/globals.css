@@ -22,3 +22,24 @@ a {
 button{
   cursor: pointer;
 }
+
+/* Анимация "подсказки" для слайдера */
+@keyframes bounceHint {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-50px); /* Двигаем влево */
+  }
+  100% {
+    transform: translateX(0); /* Возвращаем на место */
+  }
+}
+
+/* Класс, который применяет анимацию */
+.animate-bounce-hint {
+  animation-name: bounceHint;
+  animation-duration: 1.9s; /* Длительность анимации */
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 2; /* Проиграть только один раз */
+}

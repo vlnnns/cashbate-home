@@ -85,8 +85,8 @@ const Footer: React.FC = () => {
                         <p className="text-neutral-500">
                             &copy; {currentYear} Cashbate. All rights reserved.
                         </p>
-                        <a href="/privacy-policy" className="hover:text-white transition-colors">Terms of Use</a>
-                        <a href="/terms-of-use" className="hover:text-white transition-colors">Privacy Policy</a>
+                        <a href="/terms-of-use" className="hover:text-white transition-colors">Terms of Use</a>
+                        <a href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</a>
                     </div>
 
                     {/* Social Icons */}
