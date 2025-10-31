@@ -16,8 +16,8 @@ const navigation = [
 
 // 2. Основной компонент Navbar (Серверный)
 export default function Navbar() {
-    const LOGO_WIDTH = 150
-    const LOGO_HEIGHT = 52
+    const LOGO_WIDTH = 145
+    const LOGO_HEIGHT = 60
 
     return (
         <header className="relative z-50">
@@ -29,11 +29,9 @@ export default function Navbar() {
                     <div className="flex items-center md:gap-x-12">
                         <Link href="/" className="-m-1.5 p-1.5" aria-label="CASHBATE">
                             <Image
-                                src="/logos/logo.webp"
+                                src="/logos/logo.png"
                                 alt="CASHBATE logo"
-                                // ИСПРАВЛЕНИЕ: 'w-auto' удален отсюда.
-                                // h-10 сохраняет высоту.
-                                className="h-11"
+
                                 width={LOGO_WIDTH}
                                 height={LOGO_HEIGHT}
                                 priority
